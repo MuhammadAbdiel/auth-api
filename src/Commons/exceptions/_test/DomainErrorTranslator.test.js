@@ -75,6 +75,106 @@ describe("DomainErrorTranslator", () => {
         )
       )
     ).toStrictEqual(new InvariantError("refresh token harus string"));
+    expect(
+      DomainErrorTranslator.translate(
+        new Error("NEW_THREAD.NOT_CONTAIN_NEEDED_PROPERTY")
+      )
+    ).toStrictEqual(
+      new InvariantError("cannot make a new thread, payload not correct")
+    );
+    expect(
+      DomainErrorTranslator.translate(
+        new Error("NEW_THREAD.PROPERTY_HAVE_WRONG_DATA_TYPE")
+      )
+    ).toStrictEqual(
+      new InvariantError(
+        "cannot make a new thread, payload property have wrong data type"
+      )
+    );
+    expect(
+      DomainErrorTranslator.translate(
+        new Error("NEW_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY")
+      )
+    ).toStrictEqual(
+      new InvariantError("cannot make a new comment, payload not correct")
+    );
+    expect(
+      DomainErrorTranslator.translate(
+        new Error("NEW_COMMENT.PROPERTY_HAVE_WRONG_DATA_TYPE")
+      )
+    ).toStrictEqual(
+      new InvariantError(
+        "cannot make a new comment, payload property have wrong data type"
+      )
+    );
+    expect(
+      DomainErrorTranslator.translate(
+        new Error("NEW_COMMENT_REPLY.NOT_CONTAIN_NEEDED_PROPERTY")
+      )
+    ).toStrictEqual(
+      new InvariantError("cannot make a new comment, payload not correct")
+    );
+    expect(
+      DomainErrorTranslator.translate(
+        new Error("NEW_COMMENT_REPLY.PROPERTY_HAVE_WRONG_DATA_TYPE")
+      )
+    ).toStrictEqual(
+      new InvariantError(
+        "cannot make a new comment, payload property have wrong data type"
+      )
+    );
+    expect(
+      DomainErrorTranslator.translate(
+        new Error("THREAD_DETAILS.NOT_CONTAIN_NEEDED_PROPERTY")
+      )
+    ).toStrictEqual(
+      new InvariantError("cannot make a new thread details payload not correct")
+    );
+    expect(
+      DomainErrorTranslator.translate(
+        new Error("THREAD_DETAILS.PROPERTY_HAVE_WRONG_DATA_TYPE")
+      )
+    ).toStrictEqual(
+      new InvariantError(
+        "cannot make a new thread details, payload property have wrong data type"
+      )
+    );
+    expect(
+      DomainErrorTranslator.translate(
+        new Error("COMMENT_DETAILS.NOT_CONTAIN_NEEDED_PROPERTY")
+      )
+    ).toStrictEqual(
+      new InvariantError(
+        "cannot make a new COMMENT details payload not correct"
+      )
+    );
+    expect(
+      DomainErrorTranslator.translate(
+        new Error("COMMENT_DETAILS.PROPERTY_HAVE_WRONG_DATA_TYPE")
+      )
+    ).toStrictEqual(
+      new InvariantError(
+        "cannot make a new COMMENT details, payload property have wrong data type"
+      )
+    );
+    expect(
+      DomainErrorTranslator.translate(
+        new Error("COMMENT_REPLY_DETAILS.NOT_CONTAIN_NEEDED_PROPERTY")
+      )
+    ).toStrictEqual(
+      new InvariantError(
+        "cannot make a new COMMENT REPLY details payload not correct"
+      )
+    );
+    expect(
+      DomainErrorTranslator.translate(
+        new Error("COMMENT_REPLY_DETAILS.PROPERTY_HAVE_WRONG_DATA_TYPE")
+      )
+    ).toStrictEqual(
+      new InvariantError(
+        "cannot make a new COMMENT REPLY details, payload property have wrong data type"
+      )
+    );
   });
 
   it("should return original error when error message is not needed to translate", () => {
