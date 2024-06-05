@@ -98,7 +98,7 @@ describe("CommentRepositoryPostgres", () => {
       // Action & Assert
       await expect(
         commentRepositoryPostgres.getCommentById("wrong-comment")
-      ).rejects.toThrow(NotFoundError);
+      ).rejects.toThrowError(NotFoundError);
     });
 
     it("should return comment correctly", async () => {
@@ -201,7 +201,7 @@ describe("CommentRepositoryPostgres", () => {
 
       // Assert
       expect(deletedComment[0].is_delete).toEqual(true);
-      expect(deletedComment[0].content).toEqual(deletedComment[0].content);
+      expect(deletedComment[0].content).toEqual("**komentar telah dihapus**");
     });
 
     it("should return InvariantError when failed to delete comment", async () => {
@@ -218,7 +218,7 @@ describe("CommentRepositoryPostgres", () => {
           "thread-121",
           "user-123"
         )
-      ).rejects.toThrow(InvariantError);
+      ).rejects.toThrowError(InvariantError);
     });
   });
 });

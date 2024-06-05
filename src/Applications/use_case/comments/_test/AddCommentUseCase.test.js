@@ -71,13 +71,11 @@ describe("AddCommentUseCase", () => {
       })
     );
 
-    expect(mockThreadRepository.getThreadById).toHaveBeenCalledWith(
+    expect(mockThreadRepository.getThreadById).toBeCalledWith(
       useCaseThreadId.id
     );
-    expect(mockUserRepository.getUserById).toHaveBeenCalledWith(
-      useCaseCredential.id
-    );
-    expect(mockCommentRepository.addComment).toHaveBeenCalledWith(
+    expect(mockUserRepository.getUserById).toBeCalledWith(useCaseCredential.id);
+    expect(mockCommentRepository.addComment).toBeCalledWith(
       new NewComment({
         content: useCasePayload.content,
       }).content,

@@ -140,7 +140,6 @@ describe("GetDetailsThreadUseCase", () => {
       userArnold.username
     );
   });
-
   it("should orchestrating get the details thread if there no comment", async () => {
     // Arrange
     const userArnold = {
