@@ -5,6 +5,9 @@ const PasswordHash = require("../../../security/PasswordHash");
 const AddUserUseCase = require("../AddUserUseCase");
 
 describe("AddUserUseCase", () => {
+  /**
+   * Menguji apakah use case mampu mengoskestrasikan langkah demi langkah dengan benar.
+   */
   it("should orchestrating the add user action correctly", async () => {
     // Arrange
     const useCasePayload = {
@@ -12,17 +15,18 @@ describe("AddUserUseCase", () => {
       password: "secret",
       fullname: "Dicoding Indonesia",
     };
+
     const mockRegisteredUser = new RegisteredUser({
       id: "user-123",
       username: useCasePayload.username,
       fullname: useCasePayload.fullname,
     });
 
-    // creating dependency of use case
+    /** creating dependency of use case */
     const mockUserRepository = new UserRepository();
     const mockPasswordHash = new PasswordHash();
 
-    // mocking needed function
+    /** mocking needed function */
     mockUserRepository.verifyAvailableUsername = jest
       .fn()
       .mockImplementation(() => Promise.resolve());
@@ -33,7 +37,7 @@ describe("AddUserUseCase", () => {
       .fn()
       .mockImplementation(() => Promise.resolve(mockRegisteredUser));
 
-    // creating use case instance
+    /** creating use case instance */
     const getUserUseCase = new AddUserUseCase({
       userRepository: mockUserRepository,
       passwordHash: mockPasswordHash,
@@ -50,11 +54,12 @@ describe("AddUserUseCase", () => {
         fullname: useCasePayload.fullname,
       })
     );
-    expect(mockUserRepository.verifyAvailableUsername).toHaveBeenCalledWith(
+
+    expect(mockUserRepository.verifyAvailableUsername).toBeCalledWith(
       useCasePayload.username
     );
-    expect(mockPasswordHash.hash).toHaveBeenCalledWith(useCasePayload.password);
-    expect(mockUserRepository.addUser).toHaveBeenCalledWith(
+    expect(mockPasswordHash.hash).toBeCalledWith(useCasePayload.password);
+    expect(mockUserRepository.addUser).toBeCalledWith(
       new RegisterUser({
         username: useCasePayload.username,
         password: "encrypted_password",

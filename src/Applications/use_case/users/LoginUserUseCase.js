@@ -21,12 +21,20 @@ class LoginUserUseCase {
       username
     );
 
-    await this._passwordHash.compare(password, encryptedPassword);
+    await this._passwordHash.comparePassword(password, encryptedPassword);
+
+    const id = await this._userRepository.getIdByUsername(username);
 
     const accessToken =
-      await this._authenticationTokenManager.createAccessToken({ username });
+      await this._authenticationTokenManager.createAccessToken({
+        username,
+        id,
+      });
     const refreshToken =
-      await this._authenticationTokenManager.createRefreshToken({ username });
+      await this._authenticationTokenManager.createRefreshToken({
+        username,
+        id,
+      });
 
     const newAuthentication = new NewAuthentication({
       accessToken,

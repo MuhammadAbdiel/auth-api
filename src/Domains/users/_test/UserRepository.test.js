@@ -15,5 +15,11 @@ describe("UserRepository interface", () => {
     await expect(userRepository.getPasswordByUsername("")).rejects.toThrow(
       "USER_REPOSITORY.METHOD_NOT_IMPLEMENTED"
     );
+    await expect(userRepository.getIdByUsername("")).rejects.toThrow(
+      "USER_REPOSITORY.METHOD_NOT_IMPLEMENTED"
+    );
+    await expect(userRepository.getUserById("")).rejects.toThrow(
+      "USER_REPOSITORY.METHOD_NOT_IMPLEMENTED"
+    );
   });
 });

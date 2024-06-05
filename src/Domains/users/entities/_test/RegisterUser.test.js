@@ -5,7 +5,7 @@ describe("a RegisterUser entities", () => {
     // Arrange
     const payload = {
       username: "abc",
-      fullname: "abc",
+      password: "abc",
     };
 
     // Action and Assert
@@ -46,7 +46,7 @@ describe("a RegisterUser entities", () => {
     // Arrange
     const payload = {
       username: "dico ding",
-      fullname: "Dicoding Indonesia",
+      fullname: "dicoding",
       password: "abc",
     };
 

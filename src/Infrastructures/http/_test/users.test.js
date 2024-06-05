@@ -20,6 +20,7 @@ describe("/users endpoint", () => {
         password: "secret",
         fullname: "Dicoding Indonesia",
       };
+
       const server = await createServer(container);
 
       // Action
@@ -106,7 +107,7 @@ describe("/users endpoint", () => {
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual("fail");
       expect(responseJson.message).toEqual(
-        "tidak dapat membuat user baru karena karakter username melebihi batas"
+        "tidak dapat membuat user baru karena karakter username melebihi batas limit"
       );
     });
 

@@ -98,7 +98,7 @@ describe("CommentRepositoryPostgres", () => {
       // Action & Assert
       await expect(
         commentRepositoryPostgres.getCommentById("wrong-comment")
-      ).rejects.toThrowError(NotFoundError);
+      ).rejects.toThrow(NotFoundError);
     });
 
     it("should return comment correctly", async () => {
@@ -218,7 +218,7 @@ describe("CommentRepositoryPostgres", () => {
           "thread-121",
           "user-123"
         )
-      ).rejects.toThrowError(InvariantError);
+      ).rejects.toThrow(InvariantError);
     });
   });
 });
