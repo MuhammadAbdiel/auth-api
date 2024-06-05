@@ -34,10 +34,13 @@ DomainErrorTranslator._directories = {
   "DELETE_AUTHENTICATION_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION":
     new InvariantError("refresh token harus string"),
   "NEW_THREAD.NOT_CONTAIN_NEEDED_PROPERTY": new InvariantError(
-    "cannot make a new thread, payload not correct"
+    "tidak dapat membuat thread baru karena properti yang dibutuhkan tidak ada"
   ),
   "NEW_THREAD.PROPERTY_HAVE_WRONG_DATA_TYPE": new InvariantError(
     "cannot make a new thread, payload property have wrong data type"
+  ),
+  "NEW_THREAD.PROPERTY_HAVE_WRONG_DATA_TYPE": new InvariantError(
+    "title exceed 50 character"
   ),
   "NEW_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY": new InvariantError(
     "cannot make a new comment, payload not correct"

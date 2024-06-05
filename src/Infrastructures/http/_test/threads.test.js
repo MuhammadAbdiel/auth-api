@@ -146,7 +146,7 @@ describe("/threads endpoint", () => {
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual("fail");
       expect(responseJson.message).toEqual(
-        "cannot make a new thread, payload not correct"
+        "tidak dapat membuat thread baru karena properti yang dibutuhkan tidak ada"
       );
     });
   });

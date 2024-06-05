@@ -45,8 +45,14 @@ describe("a ThreadDetails", () => {
       comments: [],
     };
 
-    // Action and Assert
+    // Action
     const threadDetails = new ThreadDetails(payload);
-    expect(threadDetails).toBeDefined();
+
+    // Assert
+    expect(threadDetails.id).toEqual(payload.id);
+    expect(threadDetails.title).toEqual(payload.title);
+    expect(threadDetails.body).toEqual(payload.body);
+    expect(threadDetails.date).toEqual(payload.date);
+    expect(threadDetails.username).toEqual(payload.username);
   });
 });
