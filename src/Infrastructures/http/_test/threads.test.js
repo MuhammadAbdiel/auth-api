@@ -151,6 +151,51 @@ describe("/threads endpoint", () => {
     });
   });
 
+  describe("when GET /threads", () => {
+    it("should display all threads", async () => {
+      // Arrange
+      const threadPayload = {
+        title: "First Thread",
+        body: "This is first thread",
+      };
+
+      const userPayload = {
+        username: "dicoding",
+        password: "secret",
+        fullname: "Dicoding Indonesia",
+      };
+
+      const loginPayload = {
+        username: "dicoding",
+        password: "secret",
+      };
+
+      const server = await createServer(container);
+
+      // Add account
+      await injection(server, addUserOption(userPayload));
+      // login
+      const auth = await injection(server, addAuthOption(loginPayload));
+      const authToken = JSON.parse(auth.payload)?.data?.accessToken;
+
+      // add thread
+      await injection(server, addThreadOption(threadPayload, authToken));
+
+      // Action
+      const response = await server.inject({
+        method: "GET",
+        url: "/threads",
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(200);
+      expect(responseJson.status).toEqual("success");
+      expect(responseJson.data.threads).toBeDefined();
+      expect(Array.isArray(responseJson.data.threads)).toBe(true);
+    });
+  });
+
   describe("when GET /threads/{threadsId}", () => {
     it("it should display the right thread details", async () => {
       // Arrange

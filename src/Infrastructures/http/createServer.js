@@ -14,6 +14,12 @@ const createServer = async (container) => {
     host: config.app.host,
     port: config.app.port,
     debug: config.app.debug,
+    // CORS
+    routes: {
+      cors: {
+        origin: ["*"],
+      },
+    },
   });
 
   await server.register([

@@ -34,7 +34,7 @@ describe("a ThreadDetails", () => {
     );
   });
 
-  it("should throw error when payload contain wrong data type", () => {
+  it("should get thread details correctly", () => {
     // Arrange
     const payload = {
       id: "something",

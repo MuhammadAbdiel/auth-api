@@ -54,6 +54,12 @@ DomainErrorTranslator._directories = {
   "NEW_COMMENT_REPLY.PROPERTY_HAVE_WRONG_DATA_TYPE": new InvariantError(
     "cannot make a new comment, payload property have wrong data type"
   ),
+  "GET_THREADS.NOT_CONTAIN_NEEDED_PROPERTY": new InvariantError(
+    "cannot get thread, payload not correct"
+  ),
+  "GET_THREADS.PROPERTY_HAVE_WRONG_DATA_TYPE": new InvariantError(
+    "cannot get thread, payload property have wrong data type"
+  ),
   "THREAD_DETAILS.NOT_CONTAIN_NEEDED_PROPERTY": new InvariantError(
     "cannot make a new thread details payload not correct"
   ),
