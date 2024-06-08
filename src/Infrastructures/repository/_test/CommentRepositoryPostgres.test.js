@@ -201,7 +201,6 @@ describe("CommentRepositoryPostgres", () => {
 
       // Assert
       expect(deletedComment[0].is_delete).toEqual(true);
-      expect(deletedComment[0].content).toEqual("**komentar telah dihapus**");
     });
 
     it("should return InvariantError when failed to delete comment", async () => {

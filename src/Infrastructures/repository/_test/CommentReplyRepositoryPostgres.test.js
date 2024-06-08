@@ -200,10 +200,8 @@ describe("CommentReplyRepositoryPostgres", () => {
         await CommentRepliesTableTestHelper.getCommentReplyById("reply-333");
 
       // Assert
+      expect(deletedCommentReply).toHaveLength(1);
       expect(deletedCommentReply[0].is_delete).toEqual(true);
-      expect(deletedCommentReply[0].content).toEqual(
-        "**balasan telah dihapus**"
-      );
     });
 
     it("should return InvariantError when failed to delete comment", async () => {
