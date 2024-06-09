@@ -82,11 +82,13 @@ describe("AddCommentReplyUseCase", () => {
       })
     );
 
-    expect(mockThreadRepository.getThreadById).toBeCalledWith(
+    expect(mockThreadRepository.getThreadById).toHaveBeenCalledWith(
       useCaseThreadId.id
     );
-    expect(mockUserRepository.getUserById).toBeCalledWith(useCaseCredential.id);
-    expect(mockCommentReplyRepository.addCommentReply).toBeCalledWith(
+    expect(mockUserRepository.getUserById).toHaveBeenCalledWith(
+      useCaseCredential.id
+    );
+    expect(mockCommentReplyRepository.addCommentReply).toHaveBeenCalledWith(
       new NewCommentReply({
         content: useCasePayload.content,
       }).content,

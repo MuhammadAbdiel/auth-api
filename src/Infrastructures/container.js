@@ -26,6 +26,7 @@ const CommentReplyRepositoryPostgres = require("./repository/CommentReplyReposit
 
 // use case
 const AddUserUseCase = require("../Applications/use_case/users/AddUserUseCase");
+const GetUserUseCase = require("../Applications/use_case/users/GetUserUseCase");
 const AuthenticationTokenManager = require("../Applications/security/AuthenticationTokenManager");
 const JwtTokenManager = require("./security/JwtTokenManager");
 const LoginUserUseCase = require("../Applications/use_case/users/LoginUserUseCase");
@@ -179,6 +180,19 @@ container.register([
         {
           name: "passwordHash",
           internal: PasswordHash.name,
+        },
+      ],
+    },
+  },
+  {
+    key: GetUserUseCase.name,
+    Class: GetUserUseCase,
+    parameter: {
+      injectType: "destructuring",
+      dependencies: [
+        {
+          name: "userRepository",
+          internal: UserRepository.name,
         },
       ],
     },

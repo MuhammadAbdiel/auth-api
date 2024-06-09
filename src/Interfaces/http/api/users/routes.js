@@ -4,6 +4,14 @@ const routes = (handler) => [
     path: "/users",
     handler: handler.postUserHandler,
   },
+  {
+    method: "GET",
+    path: "/users/me",
+    handler: handler.getOwnProfileHandler,
+    options: {
+      auth: "forum_jwt",
+    },
+  },
 ];
 
 module.exports = routes;

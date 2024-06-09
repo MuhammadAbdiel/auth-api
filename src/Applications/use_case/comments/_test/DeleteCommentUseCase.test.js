@@ -49,10 +49,10 @@ describe("DeleteCommentUseCase", () => {
     );
 
     // Assert
-    expect(mockCommentRepository.getCommentById).toBeCalledWith(
+    expect(mockCommentRepository.getCommentById).toHaveBeenCalledWith(
       useCaseCommentId
     );
-    expect(mockOwnerValidator.verifyOwner).toBeCalledWith(
+    expect(mockOwnerValidator.verifyOwner).toHaveBeenCalledWith(
       useCaseCredential,
       commentAvailable.user_id,
       "comment"

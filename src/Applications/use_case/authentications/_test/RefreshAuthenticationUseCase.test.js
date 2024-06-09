@@ -65,16 +65,18 @@ describe("RefreshAuthenticationUseCase", () => {
     );
 
     // Assert
-    expect(mockAuthenticationTokenManager.verifyRefreshToken).toBeCalledWith(
+    expect(
+      mockAuthenticationTokenManager.verifyRefreshToken
+    ).toHaveBeenCalledWith(useCasePayload.refreshToken);
+    expect(
+      mockAuthenticationRepository.checkAvailabilityToken
+    ).toHaveBeenCalledWith(useCasePayload.refreshToken);
+    expect(mockAuthenticationTokenManager.decodePayload).toHaveBeenCalledWith(
       useCasePayload.refreshToken
     );
-    expect(mockAuthenticationRepository.checkAvailabilityToken).toBeCalledWith(
-      useCasePayload.refreshToken
-    );
-    expect(mockAuthenticationTokenManager.decodePayload).toBeCalledWith(
-      useCasePayload.refreshToken
-    );
-    expect(mockAuthenticationTokenManager.createAccessToken).toBeCalledWith({
+    expect(
+      mockAuthenticationTokenManager.createAccessToken
+    ).toHaveBeenCalledWith({
       username: "dicoding",
       id: "user-123",
     });

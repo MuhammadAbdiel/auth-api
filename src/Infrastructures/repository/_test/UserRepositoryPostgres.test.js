@@ -166,4 +166,31 @@ describe("UserRepositoryPostgres", () => {
       expect(user.username).toEqual("dicoding");
     });
   });
+
+  describe("getOwnProfile", () => {
+    it("should throw InvariantError when user not found", async () => {
+      // Arrange
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
+
+      // Action & Assert
+      await expect(
+        userRepositoryPostgres.getOwnProfile("user-321")
+      ).rejects.toThrow(InvariantError);
+    });
+
+    it("should return user correctly", async () => {
+      // Arrange
+      await UsersTableTestHelper.addUser({
+        id: "user-321",
+        username: "dicoding",
+      });
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
+
+      // Action
+      const user = await userRepositoryPostgres.getOwnProfile("user-321");
+
+      // Assert
+      expect(user.username).toEqual("dicoding");
+    });
+  });
 });
