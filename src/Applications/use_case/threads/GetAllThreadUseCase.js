@@ -10,14 +10,17 @@ class GetAllThreadUseCase {
     // get user for each thread
     const threadsWithUsernames = await Promise.all(
       threadsFromDb.map(async (thread) => {
-        const { username } = await this._userRepository.getUserById(
+        const { username, fullname } = await this._userRepository.getUserById(
           thread.user_id
         );
 
         const response = {
           ...thread,
           date: thread.created_at, // assuming created_at is the intended date field
-          username,
+          user: {
+            username,
+            fullname,
+          },
         };
         delete response.created_at;
         delete response.user_id;

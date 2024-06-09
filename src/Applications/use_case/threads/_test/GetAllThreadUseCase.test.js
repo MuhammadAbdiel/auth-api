@@ -1,4 +1,3 @@
-const GetThreads = require("../../../../Domains/threads/entities/GetThreads");
 const GetAllThreadUseCase = require("../GetAllThreadUseCase");
 const ThreadRepository = require("../../../../Domains/threads/ThreadRepository");
 const UserRepository = require("../../../../Domains/users/UserRepository");
@@ -8,7 +7,8 @@ describe("GetAllThreadUseCase", () => {
     // Arrange
     const userArnold = {
       id: "user-111",
-      username: "Arnold Szechuan",
+      username: "ArnoldSzechuan",
+      fullname: "Arnold Szechuan",
     };
 
     const mockThreadData = [
@@ -33,7 +33,10 @@ describe("GetAllThreadUseCase", () => {
       title: thread.title,
       body: thread.body,
       date: thread.created_at,
-      username: userArnold.username,
+      user: {
+        username: userArnold.username,
+        fullname: userArnold.fullname,
+      },
     }));
 
     const mockThreadRepository = new ThreadRepository();
@@ -58,18 +61,7 @@ describe("GetAllThreadUseCase", () => {
     const threads = await getAllThreadUseCase.execute();
 
     // Assert
-    // Extract the relevant fields to compare
-    const sanitizedThreads = threads.map(
-      ({ id, title, body, date, username }) => ({
-        id,
-        title,
-        body,
-        date,
-        username,
-      })
-    );
-
-    expect(sanitizedThreads).toStrictEqual(expectedThreadData);
+    expect(threads).toStrictEqual(expectedThreadData);
     expect(mockThreadRepository.getAllThread).toHaveBeenCalled();
     expect(mockUserRepository.getUserById).toHaveBeenCalledWith("user-111");
   });
