@@ -38,6 +38,9 @@ describe("AddCommentUseCase", () => {
     const mockUserRepository = new UserRepository();
 
     /** mocking needed function */
+    mockThreadRepository.verifyThreadAvailability = jest
+      .fn()
+      .mockImplementation(() => Promise.resolve(useCaseThreadId));
     mockThreadRepository.getThreadById = jest
       .fn()
       .mockImplementation(() => Promise.resolve(useCaseThreadId));

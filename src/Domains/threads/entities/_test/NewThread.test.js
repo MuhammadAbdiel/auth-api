@@ -39,4 +39,20 @@ describe("a NewThread entities", () => {
       "NEW_THREAD.TITLE_EXCEED_CHAR_LIMIT"
     );
   });
+
+  it("should create new thread correctly", () => {
+    // Arrange
+    const payload = {
+      title: "something",
+      body: "this is body",
+    };
+
+    // Action
+    const newThread = new NewThread(payload);
+
+    // Assert
+    expect(newThread).toBeInstanceOf(NewThread);
+    expect(newThread.title).toEqual(payload.title);
+    expect(newThread.body).toEqual(payload.body);
+  });
 });

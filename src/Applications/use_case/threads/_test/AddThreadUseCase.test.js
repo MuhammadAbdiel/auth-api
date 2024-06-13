@@ -1,16 +1,16 @@
 const ThreadRepository = require("../../../../Domains/threads/ThreadRepository");
 const AddedThread = require("../../../../Domains/threads/entities/AddedThread");
+const NewThread = require("../../../../Domains/threads/entities/NewThread");
 const AddThreadUseCase = require("../AddThreadUseCase");
 
 describe("AddThreadUseCase", () => {
   /**
-   * Testing if the thread use case can orchestra step by step the
-   * for adding new thread correctly
+   * Testing if the thread use case can orchestrate step by step
+   * the process of adding a new thread correctly
    */
 
-  it("should orchestrating the add thread action correctly", async () => {
+  it("should orchestrate the add thread action correctly", async () => {
     // Arrange
-
     const useCasePayload = {
       title: "Title for thread",
       body: "This is body for thread",
@@ -26,8 +26,7 @@ describe("AddThreadUseCase", () => {
       owner: "user-123",
     });
 
-    /** creating dependency of use case*/
-
+    /** creating dependency of use case */
     const mockThreadRepository = new ThreadRepository();
 
     /** mocking needed function */
@@ -36,17 +35,17 @@ describe("AddThreadUseCase", () => {
       .mockImplementation(() => Promise.resolve(mockAddedThread));
 
     /** creating use case instance */
-    const getThreadUsecase = new AddThreadUseCase({
+    const addThreadUseCase = new AddThreadUseCase({
       threadRepository: mockThreadRepository,
     });
 
-    //Action
-    const addedThread = await getThreadUsecase.execute(
+    // Action
+    const addedThread = await addThreadUseCase.execute(
       useCasePayload,
       useCaseCredential
     );
 
-    //Assert
+    // Assert
     expect(addedThread).toStrictEqual(
       new AddedThread({
         id: "thread-123",
@@ -54,5 +53,17 @@ describe("AddThreadUseCase", () => {
         owner: "user-123",
       })
     );
+
+    // Verify all mock function calls
+    expect(mockThreadRepository.addNewThread).toHaveBeenCalledWith(
+      {
+        title: useCasePayload.title,
+        body: useCasePayload.body,
+      },
+      {
+        id: useCaseCredential.id,
+      }
+    );
+    expect(mockThreadRepository.addNewThread).toHaveBeenCalledTimes(1);
   });
 });

@@ -10,12 +10,7 @@ const CommentReplyDetails = require("../../../../Domains/comment_replies/entitie
 const GetDetailsThreadUseCase = require("../GetDetailsThreadUseCase");
 
 describe("GetDetailsThreadUseCase", () => {
-  /**
-   * Testing the get thread details use case
-   * can orchestra step by step
-   * for adding the new thread details correctly
-   */
-  it("should orchestrating get the details thread", async () => {
+  it("should orchestrate get the details thread", async () => {
     // Arrange
     const userArnold = {
       id: "user-111",
@@ -42,6 +37,7 @@ describe("GetDetailsThreadUseCase", () => {
         created_at: "2023-08-17 20:38:31.448",
         user_id: "user-111",
         thread_id: "thread-123",
+        is_delete: false,
       },
       {
         id: "comment-222",
@@ -49,13 +45,15 @@ describe("GetDetailsThreadUseCase", () => {
         created_at: "2023-08-17 20:38:31.448",
         user_id: "user-111",
         thread_id: "thread-123",
+        is_delete: false,
       },
       {
-        id: "comment-222",
+        id: "comment-333",
         content: "this is third without reply",
         created_at: "2023-08-17 20:38:31.448",
         user_id: "user-111",
         thread_id: "thread-123",
+        is_delete: false,
       },
     ];
 
@@ -66,6 +64,7 @@ describe("GetDetailsThreadUseCase", () => {
         created_at: "2023-08-18 20:38:31.448",
         user_id: "user-222",
         comment_id: "comment-123",
+        is_delete: false,
       },
       {
         id: "reply-124",
@@ -73,24 +72,27 @@ describe("GetDetailsThreadUseCase", () => {
         created_at: "2023-08-18 20:38:31.448",
         user_id: "user-111",
         comment_id: "comment-123",
+        is_delete: false,
       },
       {
-        id: "reply-124",
+        id: "reply-125",
         content: "this is third reply",
         created_at: "2023-08-18 20:38:31.448",
         user_id: "user-111",
         comment_id: "comment-123",
+        is_delete: false,
       },
       {
-        id: "reply-124",
+        id: "reply-126",
         content: "this is fourth reply",
         created_at: "2023-08-18 20:38:31.448",
         user_id: "user-111",
         comment_id: "comment-123",
+        is_delete: false,
       },
     ];
 
-    /** creting dependency of use case */
+    /** creating dependency of use case */
     const mockCommentReplyRepository = new CommentReplyRepository();
     const mockCommentRepository = new CommentRepository();
     const mockThreadRepository = new ThreadRepository();
@@ -130,6 +132,7 @@ describe("GetDetailsThreadUseCase", () => {
 
     // Action
     const threadDetails = await getDetailsThreadUseCase.execute("thread-123");
+
     // Assert
     expect(threadDetails.comments).toHaveLength(3);
     expect(threadDetails.comments[0].replies).toHaveLength(4);
@@ -140,7 +143,8 @@ describe("GetDetailsThreadUseCase", () => {
       userArnold.username
     );
   });
-  it("should orchestrating get the details thread if there no comment", async () => {
+
+  it("should orchestrate get the details thread if there are no comments", async () => {
     // Arrange
     const userArnold = {
       id: "user-111",
@@ -162,7 +166,7 @@ describe("GetDetailsThreadUseCase", () => {
 
     const commentData = [];
 
-    /** creting dependency of use case */
+    /** creating dependency of use case */
     const mockCommentReplyRepository = new CommentReplyRepository();
     const mockCommentRepository = new CommentRepository();
     const mockThreadRepository = new ThreadRepository();
@@ -194,6 +198,7 @@ describe("GetDetailsThreadUseCase", () => {
 
     // Action
     const threadDetails = await getDetailsThreadUseCase.execute("thread-123");
+
     // Assert
     expect(threadDetails.comments).toHaveLength(0);
   });
