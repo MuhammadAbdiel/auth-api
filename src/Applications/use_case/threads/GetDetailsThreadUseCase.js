@@ -20,15 +20,15 @@ class GetDetailsThreadUseCase {
     const threadFromDb = await this._threadRepository.getThreadById(
       useCaseThreadId
     );
-    const { username: threadUsername } = await this._userRepository.getUserById(
-      threadFromDb.user_id
-    );
+    const { username: threadUsername, fullname: threadFullname } =
+      await this._userRepository.getUserById(threadFromDb.user_id);
     const thread = new ThreadDetails({
       id: threadFromDb.id,
       title: threadFromDb.title,
       body: threadFromDb.body,
       date: threadFromDb.created_at.toString(),
       username: threadUsername,
+      fullname: threadFullname,
       comments: [],
     });
     // get comments by thread
@@ -38,13 +38,14 @@ class GetDetailsThreadUseCase {
     // get comment replies by comment
     if (commentsInThread.length > 0) {
       for (const commentData of commentsInThread) {
-        const { username: commentUsername } =
+        const { username: commentUsername, fullname: commentFullname } =
           await this._userRepository.getUserById(commentData.user_id);
         const commentDetails = new CommentDetails({
           id: commentData.id,
           content: commentData.content,
           date: commentData.created_at.toString(),
           username: commentUsername,
+          fullname: commentFullname,
           replies: [],
         });
 
@@ -55,13 +56,14 @@ class GetDetailsThreadUseCase {
 
         if (repliesInComment.length > 0) {
           for (const replyData of repliesInComment) {
-            const { username: replyUsername } =
+            const { username: replyUsername, fullname: replyFullname } =
               await this._userRepository.getUserById(replyData.user_id);
             const commentReplyDetails = new CommentReplyDetails({
               id: replyData.id,
               content: replyData.content,
               date: replyData.created_at.toString(),
               username: replyUsername,
+              fullname: replyFullname,
             });
 
             commentDetails.replies.push(commentReplyDetails);
