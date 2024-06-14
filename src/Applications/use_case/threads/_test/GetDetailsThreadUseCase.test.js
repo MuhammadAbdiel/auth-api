@@ -3,10 +3,6 @@ const CommentRepository = require("../../../../Domains/comments/CommentRepositor
 const ThreadRepository = require("../../../../Domains/threads/ThreadRepository");
 const UserRepository = require("../../../../Domains/users/UserRepository");
 
-const ThreadDetails = require("../../../../Domains/threads/entities/ThreadDetails");
-const CommentDetails = require("../../../../Domains/comments/entities/CommentDetails");
-const CommentReplyDetails = require("../../../../Domains/comment_replies/entities/CommentReplyDetails");
-
 const GetDetailsThreadUseCase = require("../GetDetailsThreadUseCase");
 
 describe("GetDetailsThreadUseCase", () => {
