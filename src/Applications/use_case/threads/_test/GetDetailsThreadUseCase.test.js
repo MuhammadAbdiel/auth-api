@@ -15,18 +15,20 @@ describe("GetDetailsThreadUseCase", () => {
     const userArnold = {
       id: "user-111",
       username: "Arnold Szechuan",
+      fullname: "Arnold Szechuan",
     };
 
     const userDhh = {
       id: "user-222",
       username: "DHH",
+      fullname: "David Heinemeier Hansson",
     };
 
     const mockThreadData = {
       id: "thread-123",
       title: "this is title thread",
       body: "this is body",
-      created_at: "2023-07-18 20:38:31.448",
+      created_at: new Date("2023-07-18T20:38:31.448Z"),
       user_id: "user-111",
     };
 
@@ -34,7 +36,7 @@ describe("GetDetailsThreadUseCase", () => {
       {
         id: "comment-123",
         content: "this is first",
-        created_at: "2023-08-17 20:38:31.448",
+        created_at: new Date("2023-08-17T20:38:31.448Z"),
         user_id: "user-111",
         thread_id: "thread-123",
         is_delete: false,
@@ -42,7 +44,7 @@ describe("GetDetailsThreadUseCase", () => {
       {
         id: "comment-222",
         content: "this is second without reply",
-        created_at: "2023-08-17 20:38:31.448",
+        created_at: new Date("2023-08-17T20:38:31.448Z"),
         user_id: "user-111",
         thread_id: "thread-123",
         is_delete: false,
@@ -50,7 +52,7 @@ describe("GetDetailsThreadUseCase", () => {
       {
         id: "comment-333",
         content: "this is third without reply",
-        created_at: "2023-08-17 20:38:31.448",
+        created_at: new Date("2023-08-17T20:38:31.448Z"),
         user_id: "user-111",
         thread_id: "thread-123",
         is_delete: false,
@@ -61,7 +63,7 @@ describe("GetDetailsThreadUseCase", () => {
       {
         id: "reply-123",
         content: "this is first reply",
-        created_at: "2023-08-18 20:38:31.448",
+        created_at: new Date("2023-08-18T20:38:31.448Z"),
         user_id: "user-222",
         comment_id: "comment-123",
         is_delete: false,
@@ -69,7 +71,7 @@ describe("GetDetailsThreadUseCase", () => {
       {
         id: "reply-124",
         content: "this is second reply",
-        created_at: "2023-08-18 20:38:31.448",
+        created_at: new Date("2023-08-18T20:38:31.448Z"),
         user_id: "user-111",
         comment_id: "comment-123",
         is_delete: false,
@@ -77,7 +79,7 @@ describe("GetDetailsThreadUseCase", () => {
       {
         id: "reply-125",
         content: "this is third reply",
-        created_at: "2023-08-18 20:38:31.448",
+        created_at: new Date("2023-08-18T20:38:31.448Z"),
         user_id: "user-111",
         comment_id: "comment-123",
         is_delete: false,
@@ -85,7 +87,7 @@ describe("GetDetailsThreadUseCase", () => {
       {
         id: "reply-126",
         content: "this is fourth reply",
-        created_at: "2023-08-18 20:38:31.448",
+        created_at: new Date("2023-08-18T20:38:31.448Z"),
         user_id: "user-111",
         comment_id: "comment-123",
         is_delete: false,
@@ -149,18 +151,20 @@ describe("GetDetailsThreadUseCase", () => {
     const userArnold = {
       id: "user-111",
       username: "Arnold Szechuan",
+      fullname: "Arnold Szechuan",
     };
 
     const userDhh = {
       id: "user-222",
       username: "DHH",
+      fullname: "David Heinemeier Hansson",
     };
 
     const mockThreadData = {
       id: "thread-123",
       title: "this is title thread",
       body: "this is body",
-      created_at: "2023-07-18 20:38:31.448",
+      created_at: new Date("2023-07-18T20:38:31.448Z"),
       user_id: "user-111",
     };
 

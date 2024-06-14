@@ -8,6 +8,7 @@ describe("a ThreadDetails", () => {
       body: "something",
       date: "something",
       username: "something",
+      fullname: "something",
       comments: [],
     };
 
@@ -25,6 +26,7 @@ describe("a ThreadDetails", () => {
       body: "something",
       date: "something",
       username: "something",
+      fullname: "something",
       comments: "[]",
     };
 
@@ -42,6 +44,7 @@ describe("a ThreadDetails", () => {
       body: "something",
       date: "something",
       username: "something",
+      fullname: "something",
       comments: [],
     };
 
@@ -54,6 +57,7 @@ describe("a ThreadDetails", () => {
     expect(threadDetails.body).toEqual(payload.body);
     expect(threadDetails.date).toEqual(payload.date);
     expect(threadDetails.username).toEqual(payload.username);
+    expect(threadDetails.fullname).toEqual(payload.fullname);
     expect(threadDetails.comments).toEqual(payload.comments);
     expect(threadDetails).toBeDefined();
   });
