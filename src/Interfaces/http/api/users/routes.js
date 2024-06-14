@@ -12,6 +12,14 @@ const routes = (handler) => [
       auth: "forum_jwt",
     },
   },
+  {
+    method: "GET",
+    path: "/users/{userId}",
+    handler: handler.getUserByIdHandler,
+    options: {
+      auth: "forum_jwt",
+    },
+  },
 ];
 
 module.exports = routes;
