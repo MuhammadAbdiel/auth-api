@@ -256,4 +256,115 @@ describe("/users endpoint", () => {
       expect(responseJson.status).toEqual("fail");
     });
   });
+
+  describe("when GET /users/{userId}", () => {
+    it("should response 200 and return user details", async () => {
+      // Arrange
+      const userPayload = {
+        username: "dicoding",
+        password: "secret",
+        fullname: "Dicoding Indonesia",
+      };
+
+      const loginPayload = {
+        username: "dicoding",
+        password: "secret",
+      };
+
+      const server = await createServer(container);
+
+      // Add account
+      const user = await injection(server, addUserOption(userPayload));
+      // login
+      const auth = await injection(server, addAuthOption(loginPayload));
+      const authToken = JSON.parse(auth.payload)?.data?.accessToken;
+      const userId = JSON.parse(user.payload)?.data?.addedUser.id;
+
+      // Action
+      const response = await server.inject({
+        method: "GET",
+        url: `/users/${userId}`,
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(200);
+      expect(responseJson.status).toEqual("success");
+      expect(responseJson.data.user).toBeDefined();
+    });
+
+    it("should response 401 when access token not provided", async () => {
+      // Arrange
+      const userPayload = {
+        username: "dicoding",
+        password: "secret",
+        fullname: "Dicoding Indonesia",
+      };
+
+      const server = await createServer(container);
+
+      // Add account
+      const user = await injection(server, addUserOption(userPayload));
+      const userId = JSON.parse(user.payload)?.data?.addedUser.id;
+
+      // Action
+      const response = await server.inject({
+        method: "GET",
+        url: `/users/${userId}`,
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(401);
+      expect(responseJson.error).toEqual("Unauthorized");
+    });
+
+    it("should response 401 when access token invalid", async () => {
+      // Arrange
+      const userPayload = {
+        username: "dicoding",
+        password: "secret",
+        fullname: "Dicoding Indonesia",
+      };
+
+      const server = await createServer(container);
+
+      // Add account
+      const user = await injection(server, addUserOption(userPayload));
+      const userId = JSON.parse(user.payload)?.data?.addedUser.id;
+
+      // Action
+      const response = await server.inject({
+        method: "GET",
+        url: `/users/${userId}`,
+        headers: { Authorization: "Bearer invalid_access_token" },
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(401);
+      expect(responseJson.error).toEqual("Unauthorized");
+    });
+
+    it("should response 400 when user not found", async () => {
+      // Arrange
+      const accessToken = await container
+        .getInstance(AuthenticationTokenManager.name)
+        .createAccessToken({ id: "non_existent_user" });
+      const server = await createServer(container);
+
+      // Action
+      const response = await server.inject({
+        method: "GET",
+        url: "/users/non_existent_user",
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(400);
+      expect(responseJson.status).toEqual("fail");
+    });
+  });
 });
