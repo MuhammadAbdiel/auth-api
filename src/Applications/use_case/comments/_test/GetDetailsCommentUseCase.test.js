@@ -1,12 +1,11 @@
 const CommentReplyRepository = require("../../../../Domains/comment_replies/CommentReplyRepository");
 const CommentRepository = require("../../../../Domains/comments/CommentRepository");
-const ThreadRepository = require("../../../../Domains/threads/ThreadRepository");
 const UserRepository = require("../../../../Domains/users/UserRepository");
 
-const GetDetailsThreadUseCase = require("../GetDetailsThreadUseCase");
+const GetDetailsCommentUseCase = require("../GetDetailsCommentUseCase");
 
-describe("GetDetailsThreadUseCase", () => {
-  it("should orchestrate get the details thread", async () => {
+describe("GetDetailsCommentUseCase", () => {
+  it("should orchestrate get the details comment", async () => {
     // Arrange
     const userArnold = {
       id: "user-111",
@@ -20,40 +19,14 @@ describe("GetDetailsThreadUseCase", () => {
       fullname: "David Heinemeier Hansson",
     };
 
-    const mockThreadData = {
-      id: "thread-123",
-      title: "this is title thread",
-      body: "this is body",
-      created_at: new Date("2023-07-18T20:38:31.448Z"),
+    const commentData = {
+      id: "comment-123",
+      content: "this is first",
+      created_at: new Date("2023-08-17T20:38:31.448Z"),
       user_id: "user-111",
+      thread_id: "thread-123",
+      is_delete: false,
     };
-
-    const commentData = [
-      {
-        id: "comment-123",
-        content: "this is first",
-        created_at: new Date("2023-08-17T20:38:31.448Z"),
-        user_id: "user-111",
-        thread_id: "thread-123",
-        is_delete: false,
-      },
-      {
-        id: "comment-222",
-        content: "this is second without reply",
-        created_at: new Date("2023-08-17T20:38:31.448Z"),
-        user_id: "user-111",
-        thread_id: "thread-123",
-        is_delete: false,
-      },
-      {
-        id: "comment-333",
-        content: "this is third without reply",
-        created_at: new Date("2023-08-17T20:38:31.448Z"),
-        user_id: "user-111",
-        thread_id: "thread-123",
-        is_delete: false,
-      },
-    ];
 
     const replyData = [
       {
@@ -93,13 +66,12 @@ describe("GetDetailsThreadUseCase", () => {
     /** creating dependency of use case */
     const mockCommentReplyRepository = new CommentReplyRepository();
     const mockCommentRepository = new CommentRepository();
-    const mockThreadRepository = new ThreadRepository();
     const mockUserRepository = new UserRepository();
 
     /** mocking needed function */
-    mockThreadRepository.getThreadById = jest
+    mockCommentRepository.getCommentById = jest
       .fn()
-      .mockImplementation(() => Promise.resolve(mockThreadData));
+      .mockImplementation(() => Promise.resolve(commentData));
     mockUserRepository.getUserById = jest.fn().mockImplementation((userId) => {
       if (userId === "user-111") {
         return Promise.resolve(userArnold);
@@ -108,9 +80,6 @@ describe("GetDetailsThreadUseCase", () => {
         return Promise.resolve(userDhh);
       }
     });
-    mockCommentRepository.getCommentByThreadId = jest
-      .fn()
-      .mockImplementation(() => Promise.resolve(commentData));
     mockCommentReplyRepository.getCommentReplyByCommentId = jest
       .fn()
       .mockImplementation((commentId) => {
@@ -121,28 +90,24 @@ describe("GetDetailsThreadUseCase", () => {
       });
 
     /** create use case instance */
-    const getDetailsThreadUseCase = new GetDetailsThreadUseCase({
+    const getDetailsCommentUseCase = new GetDetailsCommentUseCase({
       commentReplyRepository: mockCommentReplyRepository,
       commentRepository: mockCommentRepository,
-      threadRepository: mockThreadRepository,
       userRepository: mockUserRepository,
     });
 
     // Action
-    const threadDetails = await getDetailsThreadUseCase.execute("thread-123");
+    const commentDetails = await getDetailsCommentUseCase.execute(
+      "comment-123"
+    );
 
     // Assert
-    expect(threadDetails.comments).toHaveLength(3);
-    expect(threadDetails.comments[0].replies).toHaveLength(4);
-    expect(threadDetails.comments[0].replies[0].username).toBe(
-      userDhh.username
-    );
-    expect(threadDetails.comments[0].replies[1].username).toBe(
-      userArnold.username
-    );
+    expect(commentDetails.replies).toHaveLength(4);
+    expect(commentDetails.replies[0].username).toBe(userDhh.username);
+    expect(commentDetails.replies[1].username).toBe(userArnold.username);
   });
 
-  it("should orchestrate get the details thread if there are no comments", async () => {
+  it("should orchestrate get the details comment if there are no replies", async () => {
     // Arrange
     const userArnold = {
       id: "user-111",
@@ -156,26 +121,26 @@ describe("GetDetailsThreadUseCase", () => {
       fullname: "David Heinemeier Hansson",
     };
 
-    const mockThreadData = {
-      id: "thread-123",
-      title: "this is title thread",
-      body: "this is body",
-      created_at: new Date("2023-07-18T20:38:31.448Z"),
+    const commentData = {
+      id: "comment-123",
+      content: "this is first",
+      created_at: new Date("2023-08-17T20:38:31.448Z"),
       user_id: "user-111",
+      thread_id: "thread-123",
+      is_delete: false,
     };
 
-    const commentData = [];
+    const replyData = [];
 
     /** creating dependency of use case */
     const mockCommentReplyRepository = new CommentReplyRepository();
     const mockCommentRepository = new CommentRepository();
-    const mockThreadRepository = new ThreadRepository();
     const mockUserRepository = new UserRepository();
 
     /** mocking needed function */
-    mockThreadRepository.getThreadById = jest
+    mockCommentRepository.getCommentById = jest
       .fn()
-      .mockImplementation(() => Promise.resolve(mockThreadData));
+      .mockImplementation(() => Promise.resolve(commentData));
     mockUserRepository.getUserById = jest.fn().mockImplementation((userId) => {
       if (userId === "user-111") {
         return Promise.resolve(userArnold);
@@ -184,22 +149,28 @@ describe("GetDetailsThreadUseCase", () => {
         return Promise.resolve(userDhh);
       }
     });
-    mockCommentRepository.getCommentByThreadId = jest
+    mockCommentReplyRepository.getCommentReplyByCommentId = jest
       .fn()
-      .mockImplementation(() => Promise.resolve(commentData));
+      .mockImplementation((commentId) => {
+        if (commentId === "comment-123") {
+          return Promise.resolve(replyData);
+        }
+        return Promise.resolve([]);
+      });
 
     /** create use case instance */
-    const getDetailsThreadUseCase = new GetDetailsThreadUseCase({
+    const getDetailsCommentUseCase = new GetDetailsCommentUseCase({
       commentReplyRepository: mockCommentReplyRepository,
       commentRepository: mockCommentRepository,
-      threadRepository: mockThreadRepository,
       userRepository: mockUserRepository,
     });
 
     // Action
-    const threadDetails = await getDetailsThreadUseCase.execute("thread-123");
+    const commentDetails = await getDetailsCommentUseCase.execute(
+      "comment-123"
+    );
 
     // Assert
-    expect(threadDetails.comments).toHaveLength(0);
+    expect(commentDetails.replies).toHaveLength(0);
   });
 });
