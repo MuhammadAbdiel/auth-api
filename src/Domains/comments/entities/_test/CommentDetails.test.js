@@ -7,6 +7,7 @@ describe("a CommentDetails", () => {
       content: "something",
       date: "something",
       username: "something",
+      fullname: "something",
       replies: [],
     };
 
@@ -23,6 +24,7 @@ describe("a CommentDetails", () => {
       content: "something",
       date: "something",
       username: "something",
+      fullname: "something",
       replies: "[]",
     };
 
@@ -39,6 +41,7 @@ describe("a CommentDetails", () => {
       content: "something",
       date: "something",
       username: "something",
+      fullname: "something",
       replies: [],
     };
 

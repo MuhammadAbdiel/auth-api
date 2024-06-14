@@ -22,6 +22,7 @@ describe("a CommentReplyDetails", () => {
       content: "something",
       date: 123,
       username: "something",
+      fullname: "something",
     };
 
     // Action and Assert
@@ -37,6 +38,7 @@ describe("a CommentReplyDetails", () => {
       content: "something",
       date: "something",
       username: "something",
+      fullname: "something",
     };
 
     // Action and Assert
