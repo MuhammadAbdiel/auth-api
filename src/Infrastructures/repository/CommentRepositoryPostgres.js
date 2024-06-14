@@ -48,7 +48,7 @@ class CommentRepositoryPostgress extends CommentRepository {
 
   async getCommentByThreadId(threadId) {
     const query = {
-      text: "SELECT * FROM comments WHERE thread_id = $1 ORDER BY created_at ASC",
+      text: "SELECT * FROM comments WHERE thread_id = $1 AND is_delete = false ORDER BY created_at ASC",
       values: [threadId],
     };
 
