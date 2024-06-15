@@ -40,13 +40,10 @@ describe("AddCommentUseCase", () => {
     /** mocking needed function */
     mockThreadRepository.verifyThreadAvailability = jest
       .fn()
-      .mockImplementation(() => Promise.resolve(useCaseThreadId));
-    mockThreadRepository.getThreadById = jest
+      .mockImplementation(() => Promise.resolve(1));
+    mockUserRepository.verifyUserAvailability = jest
       .fn()
-      .mockImplementation(() => Promise.resolve(useCaseThreadId));
-    mockUserRepository.getUserById = jest
-      .fn()
-      .mockImplementation(() => Promise.resolve(useCaseCredential));
+      .mockImplementation(() => Promise.resolve(1));
     mockCommentRepository.addComment = jest
       .fn()
       .mockImplementation(() => Promise.resolve(mockAddedComment));
@@ -73,11 +70,10 @@ describe("AddCommentUseCase", () => {
         owner: useCaseCredential.id,
       })
     );
-
-    expect(mockThreadRepository.getThreadById).toHaveBeenCalledWith(
+    expect(mockThreadRepository.verifyThreadAvailability).toHaveBeenCalledWith(
       useCaseThreadId.id
     );
-    expect(mockUserRepository.getUserById).toHaveBeenCalledWith(
+    expect(mockUserRepository.verifyUserAvailability).toHaveBeenCalledWith(
       useCaseCredential.id
     );
     expect(mockCommentRepository.addComment).toHaveBeenCalledWith(

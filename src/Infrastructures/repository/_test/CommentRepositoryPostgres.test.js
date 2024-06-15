@@ -125,6 +125,44 @@ describe("CommentRepositoryPostgres", () => {
     });
   });
 
+  describe("getCommentByUserId", () => {
+    it("should return NotFoundError when comment not found", async () => {
+      // Arrange
+      const commentRepositoryPostgres = new CommentRepositoryPostgress(
+        pool,
+        {}
+      );
+
+      // Action & Assert
+      await expect(
+        commentRepositoryPostgres.getCommentByUserId("wrong-user-id")
+      ).rejects.toThrow(NotFoundError);
+    });
+
+    it("should return comment correctly", async () => {
+      // Arrange
+      await CommentsTableTestHelper.addComment({
+        id: "comment-333",
+        user_id: userId,
+        thread_id: threadId,
+      });
+      const commentRepositoryPostgres = new CommentRepositoryPostgress(
+        pool,
+        {}
+      );
+
+      // Action
+      const comment = await commentRepositoryPostgres.getCommentByUserId(
+        userId
+      );
+
+      // Assert
+      expect(comment.id).toEqual("comment-333");
+      expect(comment.user_id).toEqual(userId);
+      expect(comment.thread_id).toEqual(threadId);
+    });
+  });
+
   describe("getCommentByThreadId", () => {
     it("should return comments correctly", async () => {
       // Arrange

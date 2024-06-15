@@ -46,9 +46,26 @@ class CommentRepositoryPostgress extends CommentRepository {
     return comment;
   }
 
+  async getCommentByUserId(userId) {
+    const query = {
+      text: "SELECT * FROM comments WHERE user_id = $1",
+      values: [userId],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new NotFoundError("comment not found");
+    }
+
+    const comment = result.rows[0];
+
+    return comment;
+  }
+
   async getCommentByThreadId(threadId) {
     const query = {
-      text: "SELECT * FROM comments WHERE thread_id = $1 AND is_delete = false ORDER BY created_at ASC",
+      text: "SELECT * FROM comments WHERE thread_id = $1 ORDER BY created_at ASC",
       values: [threadId],
     };
 
@@ -62,11 +79,9 @@ class CommentRepositoryPostgress extends CommentRepository {
   }
 
   async deleteComment(commentId, threadId, ownerId) {
-    const deletedComment = "**komentar telah dihapus**";
-
     const query = {
-      text: "UPDATE comments SET content = $1, is_delete = true WHERE id = $2 AND thread_id = $3 AND user_id = $4 RETURNING id",
-      values: [deletedComment, commentId, threadId, ownerId],
+      text: "UPDATE comments SET is_delete = true WHERE id = $1 AND thread_id = $2 AND user_id = $3 RETURNING id",
+      values: [commentId, threadId, ownerId],
     };
 
     const result = await this._pool.query(query);

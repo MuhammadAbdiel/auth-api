@@ -62,6 +62,12 @@ describe("a GetThreads", () => {
     const getThreads = new GetThreads(payload);
 
     // Assert
+    expect(getThreads.threads).toEqual(payload);
+    expect(getThreads.threads[0].id).toEqual("thread-123");
+    expect(getThreads.threads[0].title).toEqual("This is title");
+    expect(getThreads.threads[0].body).toEqual("This is body");
+    expect(getThreads.threads[0].date).toEqual("something");
+    expect(getThreads.threads[0].username).toEqual("dicoding");
     expect(getThreads).toBeDefined();
   });
 });

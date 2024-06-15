@@ -94,6 +94,11 @@ describe("ThreadRepositoryPostgres", () => {
       expect(threads).toHaveLength(1);
       expect(threads[0].id).toEqual("thread-521");
       expect(threads[0].title).toEqual("Thread test");
+      expect(threads[0].body).toEqual("This is helper thread");
+      expect(threads[0].created_at).toEqual(
+        new Date("2024-06-13T00:00:00.000Z")
+      );
+      expect(threads[0].user_id).toEqual("user-123");
     });
   });
 
@@ -153,6 +158,11 @@ describe("ThreadRepositoryPostgres", () => {
       await expect(
         threadRepositoryPostgres.verifyThreadAvailability("thread-521")
       ).resolves.not.toThrow(NotFoundError);
+
+      const result = await threadRepositoryPostgres.verifyThreadAvailability(
+        "thread-521"
+      );
+      expect(result).toBe(1);
     });
   });
 });

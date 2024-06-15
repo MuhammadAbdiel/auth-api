@@ -45,8 +45,15 @@ describe("a CommentDetails", () => {
       replies: [],
     };
 
-    // Action and Assert
+    // Action
     const commentDetails = new CommentDetails(payload);
+
+    // Assert
+    expect(commentDetails.id).toEqual(payload.id);
+    expect(commentDetails.content).toEqual(payload.content);
+    expect(commentDetails.date).toEqual(payload.date);
+    expect(commentDetails.username).toEqual(payload.username);
+    expect(commentDetails.replies).toEqual(payload.replies);
     expect(commentDetails).toBeDefined();
   });
 });
