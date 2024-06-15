@@ -70,6 +70,12 @@ describe("AddCommentUseCase", () => {
         owner: useCaseCredential.id,
       })
     );
+    expect(mockThreadRepository.verifyThreadAvailability).toHaveBeenCalledWith(
+      useCaseThreadId.id
+    );
+    expect(mockUserRepository.verifyUserAvailability).toHaveBeenCalledWith(
+      useCaseCredential.id
+    );
     expect(mockCommentRepository.addComment).toHaveBeenCalledWith(
       new NewComment({
         content: useCasePayload.content,
