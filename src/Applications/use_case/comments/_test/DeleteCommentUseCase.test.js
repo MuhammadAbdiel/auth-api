@@ -1,6 +1,5 @@
 const CommentRepository = require("../../../../Domains/comments/CommentRepository");
 const ThreadRepository = require("../../../../Domains/threads/ThreadRepository");
-const OwnerValidator = require("../../../security/OwnerValidator");
 const DeleteCommentUseCase = require("../DeleteCommentUseCase");
 
 describe("DeleteCommentUseCase", () => {
@@ -24,18 +23,17 @@ describe("DeleteCommentUseCase", () => {
     /** creating dependency of use case */
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
-    const mockOwnerValidator = new OwnerValidator();
 
     /** mocking needed fucntion */
     mockThreadRepository.verifyThreadAvailability = jest
       .fn()
       .mockImplementation(() => Promise.resolve(1));
-    mockCommentRepository.getCommentById = jest
+    mockCommentRepository.verifyCommentInThreadAvailability = jest
       .fn()
-      .mockImplementation(() => Promise.resolve(commentAvailable));
-    mockOwnerValidator.verifyOwner = jest
+      .mockImplementation(() => Promise.resolve(1));
+    mockCommentRepository.verifyCommentOwner = jest
       .fn()
-      .mockImplementation(() => Promise.resolve());
+      .mockImplementation(() => Promise.resolve(1));
     mockCommentRepository.deleteComment = jest
       .fn()
       .mockImplementation(() => Promise.resolve());
@@ -44,7 +42,6 @@ describe("DeleteCommentUseCase", () => {
     const deleteCommentUseCase = new DeleteCommentUseCase({
       threadRepository: mockThreadRepository,
       commentRepository: mockCommentRepository,
-      ownerValidator: mockOwnerValidator,
     });
 
     // Action
@@ -55,13 +52,20 @@ describe("DeleteCommentUseCase", () => {
     );
 
     // Assert
-    expect(mockCommentRepository.getCommentById).toHaveBeenCalledWith(
-      useCaseCommentId
+    expect(mockThreadRepository.verifyThreadAvailability).toHaveBeenCalledWith(
+      useCaseThreadId
     );
-    expect(mockOwnerValidator.verifyOwner).toHaveBeenCalledWith(
-      useCaseCredential,
-      commentAvailable.user_id,
-      "comment"
+    expect(
+      mockCommentRepository.verifyCommentInThreadAvailability
+    ).toHaveBeenCalledWith(useCaseCommentId, useCaseThreadId);
+    expect(mockCommentRepository.verifyCommentOwner).toHaveBeenCalledWith(
+      useCaseCommentId,
+      useCaseCredential
+    );
+    expect(mockCommentRepository.deleteComment).toHaveBeenCalledWith(
+      useCaseCommentId,
+      useCaseThreadId,
+      useCaseCredential
     );
   });
 });

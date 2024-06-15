@@ -1,5 +1,6 @@
 const InvariantError = require("../../Commons/exceptions/InvariantError");
 const NotFoundError = require("../../Commons/exceptions/NotFoundError");
+const AuthorizationError = require("../../Commons/exceptions/AuthorizationError");
 const CommentRepository = require("../../Domains/comments/CommentRepository");
 const AddedComment = require("../../Domains/comments/entities/AddedComment");
 
@@ -61,6 +62,36 @@ class CommentRepositoryPostgress extends CommentRepository {
     const comment = result.rows[0];
 
     return comment;
+  }
+
+  async verifyCommentInThreadAvailability(commentId, threadId) {
+    const query = {
+      text: "SELECT 1 FROM comments WHERE id = $1 AND thread_id = $2",
+      values: [commentId, threadId],
+    };
+
+    const { rowCount } = await this._pool.query(query);
+
+    if (!rowCount) {
+      throw new NotFoundError("comment not found");
+    }
+
+    return rowCount;
+  }
+
+  async verifyCommentOwner(commentId, ownerId) {
+    const query = {
+      text: "SELECT 1 FROM comments WHERE id = $1 AND user_id = $2",
+      values: [commentId, ownerId],
+    };
+
+    const { rowCount } = await this._pool.query(query);
+
+    if (!rowCount) {
+      throw new AuthorizationError("You are not the owner of this comment");
+    }
+
+    return rowCount;
   }
 
   async getCommentByThreadId(threadId) {

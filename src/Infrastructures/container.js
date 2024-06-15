@@ -289,10 +289,6 @@ container.register([
           name: "commentRepository",
           internal: CommentRepository.name,
         },
-        {
-          name: "ownerValidator",
-          internal: OwnerValidator.name,
-        },
       ],
     },
   },
