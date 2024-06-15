@@ -56,7 +56,7 @@ class CommentReplyRepositoryPostgres extends CommentReplyRepository {
 
   async getCommentReplyByCommentId(commentId) {
     const query = {
-      text: "SELECT * FROM comment_replies WHERE comment_id = $1 AND is_delete = false ORDER BY created_at ASC",
+      text: "SELECT * FROM comment_replies WHERE comment_id = $1 ORDER BY created_at ASC",
       values: [commentId],
     };
 

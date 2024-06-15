@@ -11,15 +11,13 @@ class AddCommentUseCase {
     const { content } = new NewComment(useCasePayload);
     // verify thread availability
     await this._threadRepository.verifyThreadAvailability(useCaseThreadId);
-    // get thread
-    const thread = await this._threadRepository.getThreadById(useCaseThreadId);
-    // get user and also to verify it
-    const user = await this._userRepository.getUserById(useCaseCredential);
+    // verify user availability
+    await this._userRepository.verifyUserAvailability(useCaseCredential);
 
     return await this._commentRepository.addComment(
       content,
-      thread.id,
-      user.id
+      useCaseThreadId,
+      useCaseCredential
     );
   }
 }
