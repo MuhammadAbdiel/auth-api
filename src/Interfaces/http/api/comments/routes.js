@@ -15,6 +15,11 @@ const routes = (handler) => [
       auth: "forum_jwt",
     },
   },
+  {
+    method: "GET",
+    path: "/threads/{threadId}/comments/{commentId}",
+    handler: handler.getCommentDetailsHandler,
+  },
 ];
 
 module.exports = routes;

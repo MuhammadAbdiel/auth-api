@@ -1,7 +1,7 @@
 const CommentReplyDetails = require("../../../Domains/comment_replies/entities/CommentReplyDetails");
 const CommentDetails = require("../../../Domains/comments/entities/CommentDetails");
 
-class GetDetailsThreadUseCase {
+class GetDetailsCommentUseCase {
   constructor({ userRepository, commentRepository, commentReplyRepository }) {
     this._userRepository = userRepository;
     this._commentRepository = commentRepository;
@@ -49,4 +49,4 @@ class GetDetailsThreadUseCase {
   }
 }
 
-module.exports = GetDetailsThreadUseCase;
+module.exports = GetDetailsCommentUseCase;

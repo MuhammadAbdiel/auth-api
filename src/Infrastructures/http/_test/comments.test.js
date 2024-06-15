@@ -7,6 +7,7 @@ const {
   addThreadOption,
   addAuthOption,
   addCommentOption,
+  addCommentReplyOption,
 } = require("../../../../tests/ServerInjectionFunctionHelper");
 const CommentsTableTestHelper = require("../../../../tests/CommentsTableTestHelper");
 const container = require("../../container");
@@ -193,6 +194,75 @@ describe("/threads/{threadId}/comments endpoint", () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(403);
       expect(responseJson.status).toEqual("fail");
+    });
+  });
+
+  describe('when GET "/threads/{threadId}/comments/{commentId}"', () => {
+    it("should response 200 with status success", async () => {
+      // Arrange
+      const commentPayload = {
+        content: "This is comment",
+      };
+
+      const threadPayload = {
+        title: "First Thread",
+        body: "This is first thread",
+      };
+
+      const userPayload = {
+        username: "dicoding",
+        password: "secret",
+        fullname: "Dicoding Indonesia",
+      };
+
+      const loginPayload = {
+        username: "dicoding",
+        password: "secret",
+      };
+
+      const requestPayload = {
+        content: "This is reply",
+      };
+
+      const server = await createServer(container);
+
+      // Add account
+      await injection(server, addUserOption(userPayload));
+      // login
+      const auth = await injection(server, addAuthOption(loginPayload));
+      const authToken = JSON.parse(auth.payload)?.data?.accessToken;
+
+      // add thread
+      const thread = await injection(
+        server,
+        addThreadOption(threadPayload, authToken)
+      );
+      const threadId = JSON.parse(thread.payload)?.data?.addedThread.id;
+
+      // add comment
+      const comment = await injection(
+        server,
+        addCommentOption(commentPayload, authToken, threadId)
+      );
+      const commentId = JSON.parse(comment.payload)?.data?.addedComment.id;
+
+      // add comment replies
+      await injection(
+        server,
+        addCommentReplyOption(requestPayload, authToken, threadId, commentId)
+      );
+
+      // Action
+      const response = await server.inject({
+        method: "GET",
+        url: `/threads/${threadId}/comments/${commentId}`,
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(200);
+      expect(responseJson.status).toEqual("success");
+      expect(responseJson.data.comment).toBeDefined();
     });
   });
 });
