@@ -7,6 +7,7 @@ const CommentRepositoryPostgress = require("../CommentRepositoryPostgres");
 const AddedComment = require("../../../Domains/comments/entities/AddedComment");
 const InvariantError = require("../../../Commons/exceptions/InvariantError");
 const NotFoundError = require("../../../Commons/exceptions/NotFoundError");
+const AuthorizationError = require("../../../Commons/exceptions/AuthorizationError");
 
 describe("CommentRepositoryPostgres", () => {
   // Pre-requisite
@@ -54,6 +55,11 @@ describe("CommentRepositoryPostgres", () => {
       );
 
       expect(comment).toHaveLength(1);
+      expect(comment[0].id).toEqual("comment-222");
+      expect(comment[0].content).toEqual("This is a comment");
+      expect(comment[0].thread_id).toEqual(threadId);
+      expect(comment[0].user_id).toEqual(userId);
+      expect(comment[0].is_delete).toBe(false);
     });
 
     it("should return added comment correctly", async () => {
@@ -103,11 +109,15 @@ describe("CommentRepositoryPostgres", () => {
 
     it("should return comment correctly", async () => {
       // Arrange
-      await CommentsTableTestHelper.addComment({
+      const commentData = {
         id: "comment-333",
+        content: "This is a comment",
         user_id: userId,
         thread_id: threadId,
-      });
+        created_at: new Date(),
+        is_delete: false,
+      };
+      await CommentsTableTestHelper.addComment(commentData);
       const commentRepositoryPostgres = new CommentRepositoryPostgress(
         pool,
         {}
@@ -119,9 +129,13 @@ describe("CommentRepositoryPostgres", () => {
       );
 
       // Assert
-      expect(comment.id).toEqual("comment-333");
-      expect(comment.user_id).toEqual(userId);
-      expect(comment.thread_id).toEqual(threadId);
+      expect(comment).toHaveProperty("id", commentData.id);
+      expect(comment).toHaveProperty("content", commentData.content);
+      expect(comment).toHaveProperty("user_id", commentData.user_id);
+      expect(comment).toHaveProperty("thread_id", commentData.thread_id);
+      expect(comment).toHaveProperty("created_at");
+      expect(new Date(comment.created_at)).toEqual(commentData.created_at);
+      expect(comment).toHaveProperty("is_delete", commentData.is_delete);
     });
   });
 
@@ -141,6 +155,53 @@ describe("CommentRepositoryPostgres", () => {
 
     it("should return comment correctly", async () => {
       // Arrange
+      const commentData = {
+        id: "comment-333",
+        content: "This is a comment",
+        user_id: userId,
+        thread_id: threadId,
+        created_at: new Date(),
+        is_delete: false,
+      };
+      await CommentsTableTestHelper.addComment(commentData);
+      const commentRepositoryPostgres = new CommentRepositoryPostgress(
+        pool,
+        {}
+      );
+
+      // Action
+      const comments = await commentRepositoryPostgres.getCommentByUserId(
+        userId
+      );
+
+      // Assert
+      expect(comments.id).toEqual(commentData.id);
+      expect(comments.content).toEqual(commentData.content);
+      expect(comments.user_id).toEqual(commentData.user_id);
+      expect(comments.thread_id).toEqual(commentData.thread_id);
+      expect(comments.is_delete).toEqual(commentData.is_delete);
+    });
+  });
+
+  describe("verifyCommentInThreadAvailability", () => {
+    it("should return NotFoundError when comment not found", async () => {
+      // Arrange
+      const commentRepositoryPostgres = new CommentRepositoryPostgress(
+        pool,
+        {}
+      );
+
+      // Action & Assert
+      await expect(
+        commentRepositoryPostgres.verifyCommentInThreadAvailability(
+          "wrong-comment",
+          threadId
+        )
+      ).rejects.toThrow(NotFoundError);
+    });
+
+    it("should not return NotFoundError when comment found", async () => {
+      // Arrange
       await CommentsTableTestHelper.addComment({
         id: "comment-333",
         user_id: userId,
@@ -151,36 +212,81 @@ describe("CommentRepositoryPostgres", () => {
         {}
       );
 
-      // Action
-      const comment = await commentRepositoryPostgres.getCommentByUserId(
-        userId
-      );
-
-      // Assert
-      expect(comment.id).toEqual("comment-333");
-      expect(comment.user_id).toEqual(userId);
-      expect(comment.thread_id).toEqual(threadId);
+      // Action & Assert
+      await expect(
+        commentRepositoryPostgres.verifyCommentInThreadAvailability(
+          "comment-333",
+          threadId
+        )
+      ).resolves.not.toThrow(NotFoundError);
     });
   });
 
-  describe("getCommentByThreadId", () => {
-    it("should return comments correctly", async () => {
+  describe("verifyCommentOwner", () => {
+    it("should return AuthorizationError when comment not found", async () => {
+      // Arrange
+      const commentRepositoryPostgres = new CommentRepositoryPostgress(
+        pool,
+        {}
+      );
+
+      // Action & Assert
+      await expect(
+        commentRepositoryPostgres.verifyCommentOwner("wrong-comment", userId)
+      ).rejects.toThrow(AuthorizationError);
+    });
+
+    it("should not return AuthorizationError when comment found", async () => {
       // Arrange
       await CommentsTableTestHelper.addComment({
         id: "comment-333",
         user_id: userId,
         thread_id: threadId,
       });
-      await CommentsTableTestHelper.addComment({
-        id: "comment-222",
-        user_id: userId,
-        thread_id: threadId,
-      });
-      await CommentsTableTestHelper.addComment({
-        id: "comment-111",
-        user_id: userId,
-        thread_id: threadId,
-      });
+      const commentRepositoryPostgres = new CommentRepositoryPostgress(
+        pool,
+        {}
+      );
+
+      // Action & Assert
+      await expect(
+        commentRepositoryPostgres.verifyCommentOwner("comment-333", userId)
+      ).resolves.not.toThrow(AuthorizationError);
+    });
+  });
+
+  describe("getCommentByThreadId", () => {
+    it("should return comments correctly", async () => {
+      // Arrange
+      const commentsData = [
+        {
+          id: "comment-333",
+          content: "First comment",
+          user_id: userId,
+          thread_id: threadId,
+          created_at: new Date(),
+          is_delete: false,
+        },
+        {
+          id: "comment-222",
+          content: "Second comment",
+          user_id: userId,
+          thread_id: threadId,
+          created_at: new Date(),
+          is_delete: false,
+        },
+        {
+          id: "comment-111",
+          content: "Third comment",
+          user_id: userId,
+          thread_id: threadId,
+          created_at: new Date(),
+          is_delete: false,
+        },
+      ];
+      await CommentsTableTestHelper.addComment(commentsData[0]);
+      await CommentsTableTestHelper.addComment(commentsData[1]);
+      await CommentsTableTestHelper.addComment(commentsData[2]);
       const commentRepositoryPostgres = new CommentRepositoryPostgress(
         pool,
         {}
@@ -193,6 +299,16 @@ describe("CommentRepositoryPostgres", () => {
 
       // Assert
       expect(comments).toHaveLength(3);
+      comments.forEach((comment, index) => {
+        expect(comment.id).toEqual(commentsData[index].id);
+        expect(comment.content).toEqual(commentsData[index].content);
+        expect(comment.user_id).toEqual(commentsData[index].user_id);
+        expect(comment.thread_id).toEqual(commentsData[index].thread_id);
+        expect(new Date(comment.created_at)).toEqual(
+          commentsData[index].created_at
+        );
+        expect(comment.is_delete).toEqual(commentsData[index].is_delete);
+      });
     });
 
     it("should return empty array if there is no comment correctly", async () => {

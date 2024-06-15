@@ -41,8 +41,14 @@ describe("a CommentReplyDetails", () => {
       fullname: "something",
     };
 
-    // Action and Assert
+    // Action
     const commentReplyDetails = new CommentReplyDetails(payload);
+
+    // Assert
+    expect(commentReplyDetails.id).toEqual(payload.id);
+    expect(commentReplyDetails.content).toEqual(payload.content);
+    expect(commentReplyDetails.date).toEqual(payload.date);
+    expect(commentReplyDetails.username).toEqual(payload.username);
     expect(commentReplyDetails).toBeDefined();
   });
 });

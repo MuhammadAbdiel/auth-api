@@ -1,5 +1,6 @@
 const InvariantError = require("../../Commons/exceptions/InvariantError");
 const NotFoundError = require("../../Commons/exceptions/NotFoundError");
+const AuthorizationError = require("../../Commons/exceptions/AuthorizationError");
 const CommentRepository = require("../../Domains/comments/CommentRepository");
 const AddedComment = require("../../Domains/comments/entities/AddedComment");
 
@@ -46,6 +47,53 @@ class CommentRepositoryPostgress extends CommentRepository {
     return comment;
   }
 
+  async getCommentByUserId(userId) {
+    const query = {
+      text: "SELECT * FROM comments WHERE user_id = $1",
+      values: [userId],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new NotFoundError("comment not found");
+    }
+
+    const comment = result.rows[0];
+
+    return comment;
+  }
+
+  async verifyCommentInThreadAvailability(commentId, threadId) {
+    const query = {
+      text: "SELECT 1 FROM comments WHERE id = $1 AND thread_id = $2",
+      values: [commentId, threadId],
+    };
+
+    const { rowCount } = await this._pool.query(query);
+
+    if (!rowCount) {
+      throw new NotFoundError("comment not found");
+    }
+
+    return rowCount;
+  }
+
+  async verifyCommentOwner(commentId, ownerId) {
+    const query = {
+      text: "SELECT 1 FROM comments WHERE id = $1 AND user_id = $2",
+      values: [commentId, ownerId],
+    };
+
+    const { rowCount } = await this._pool.query(query);
+
+    if (!rowCount) {
+      throw new AuthorizationError("You are not the owner of this comment");
+    }
+
+    return rowCount;
+  }
+
   async getCommentByThreadId(threadId) {
     const query = {
       text: "SELECT * FROM comments WHERE thread_id = $1 AND is_delete = false ORDER BY created_at ASC",
@@ -62,11 +110,9 @@ class CommentRepositoryPostgress extends CommentRepository {
   }
 
   async deleteComment(commentId, threadId, ownerId) {
-    const deletedComment = "**komentar telah dihapus**";
-
     const query = {
-      text: "UPDATE comments SET content = $1, is_delete = true WHERE id = $2 AND thread_id = $3 AND user_id = $4 RETURNING id",
-      values: [deletedComment, commentId, threadId, ownerId],
+      text: "UPDATE comments SET is_delete = true WHERE id = $1 AND thread_id = $2 AND user_id = $3 RETURNING id",
+      values: [commentId, threadId, ownerId],
     };
 
     const result = await this._pool.query(query);

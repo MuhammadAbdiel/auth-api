@@ -42,7 +42,9 @@ class GetDetailsThreadUseCase {
           await this._userRepository.getUserById(commentData.user_id);
         const commentDetails = new CommentDetails({
           id: commentData.id,
-          content: commentData.content,
+          content: commentData.is_delete
+            ? "**komentar telah dihapus**"
+            : commentData.content,
           date: commentData.created_at.toString(),
           username: commentUsername,
           fullname: commentFullname,
@@ -60,7 +62,9 @@ class GetDetailsThreadUseCase {
               await this._userRepository.getUserById(replyData.user_id);
             const commentReplyDetails = new CommentReplyDetails({
               id: replyData.id,
-              content: replyData.content,
+              content: replyData.is_delete
+                ? "**balasan telah dihapus**"
+                : replyData.content,
               date: replyData.created_at.toString(),
               username: replyUsername,
               fullname: replyFullname,
