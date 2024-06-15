@@ -1,4 +1,5 @@
 const CommentRepository = require("../../../../Domains/comments/CommentRepository");
+const ThreadRepository = require("../../../../Domains/threads/ThreadRepository");
 const OwnerValidator = require("../../../security/OwnerValidator");
 const DeleteCommentUseCase = require("../DeleteCommentUseCase");
 
@@ -21,10 +22,14 @@ describe("DeleteCommentUseCase", () => {
     };
 
     /** creating dependency of use case */
+    const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
     const mockOwnerValidator = new OwnerValidator();
 
     /** mocking needed fucntion */
+    mockThreadRepository.verifyThreadAvailability = jest
+      .fn()
+      .mockImplementation(() => Promise.resolve(1));
     mockCommentRepository.getCommentById = jest
       .fn()
       .mockImplementation(() => Promise.resolve(commentAvailable));
@@ -37,6 +42,7 @@ describe("DeleteCommentUseCase", () => {
 
     /** create use case instance */
     const deleteCommentUseCase = new DeleteCommentUseCase({
+      threadRepository: mockThreadRepository,
       commentRepository: mockCommentRepository,
       ownerValidator: mockOwnerValidator,
     });

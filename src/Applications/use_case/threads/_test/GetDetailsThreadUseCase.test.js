@@ -257,5 +257,15 @@ describe("GetDetailsThreadUseCase", () => {
 
     // Assert
     expect(threadDetails.comments).toHaveLength(0);
+    expect(threadDetails).toEqual(
+      new ThreadDetails({
+        id: mockThreadData.id,
+        title: mockThreadData.title,
+        body: mockThreadData.body,
+        date: mockThreadData.created_at,
+        username: userArnold.username,
+        comments: [],
+      })
+    );
   });
 });

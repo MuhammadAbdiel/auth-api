@@ -205,7 +205,7 @@ describe("UserRepositoryPostgres", () => {
       ).rejects.toThrow(InvariantError);
     });
 
-    it("should return user correctly", async () => {
+    it("should not throw InvariantError if user found", async () => {
       // Arrange
       await UsersTableTestHelper.addUser({
         id: "user-321",
@@ -217,6 +217,11 @@ describe("UserRepositoryPostgres", () => {
       await expect(
         userRepositoryPostgres.verifyUserAvailability("user-321")
       ).resolves.not.toThrow(InvariantError);
+
+      const result = await userRepositoryPostgres.verifyUserAvailability(
+        "user-321"
+      );
+      expect(result).toBe(1);
     });
   });
 });

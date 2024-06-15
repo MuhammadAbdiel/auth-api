@@ -158,6 +158,11 @@ describe("ThreadRepositoryPostgres", () => {
       await expect(
         threadRepositoryPostgres.verifyThreadAvailability("thread-521")
       ).resolves.not.toThrow(NotFoundError);
+
+      const result = await threadRepositoryPostgres.verifyThreadAvailability(
+        "thread-521"
+      );
+      expect(result).toBe(1);
     });
   });
 });
