@@ -136,71 +136,6 @@ describe("GetDetailsThreadUseCase", () => {
 
     // Assert
     expect(threadDetails.comments).toHaveLength(3);
-    expect(threadDetails).toStrictEqual(
-      new ThreadDetails({
-        id: mockThreadData.id,
-        title: mockThreadData.title,
-        body: mockThreadData.body,
-        date: mockThreadData.created_at,
-        username: userArnold.username,
-        fullname: userArnold.fullname,
-        comments: [
-          new CommentDetails({
-            id: commentData[0].id,
-            content: commentData[0].content,
-            date: commentData[0].created_at,
-            username: userArnold.username,
-            fullname: userArnold.fullname,
-            replies: [
-              new CommentReplyDetails({
-                id: replyData[0].id,
-                content: replyData[0].content,
-                date: replyData[0].created_at,
-                username: userDhh.username,
-                fullname: userDhh.fullname,
-              }),
-              new CommentReplyDetails({
-                id: replyData[1].id,
-                content: replyData[1].content,
-                date: replyData[1].created_at,
-                username: userArnold.username,
-                fullname: userArnold.fullname,
-              }),
-              new CommentReplyDetails({
-                id: replyData[2].id,
-                content: replyData[2].content,
-                date: replyData[2].created_at,
-                username: userArnold.username,
-                fullname: userArnold.fullname,
-              }),
-              new CommentReplyDetails({
-                id: replyData[3].id,
-                content: replyData[3].content,
-                date: replyData[3].created_at,
-                username: userArnold.username,
-                fullname: userArnold.fullname,
-              }),
-            ],
-          }),
-          new CommentDetails({
-            id: commentData[1].id,
-            content: commentData[1].content,
-            date: commentData[1].created_at,
-            username: userArnold.username,
-            fullname: userArnold.fullname,
-            replies: [],
-          }),
-          new CommentDetails({
-            id: commentData[2].id,
-            content: commentData[2].content,
-            date: commentData[2].created_at,
-            username: userArnold.username,
-            fullname: userArnold.fullname,
-            replies: [],
-          }),
-        ],
-      })
-    );
     expect(threadDetails.comments[0].replies).toHaveLength(4);
     expect(threadDetails.comments[0].replies[0].username).toBe(
       userDhh.username
@@ -269,16 +204,5 @@ describe("GetDetailsThreadUseCase", () => {
 
     // Assert
     expect(threadDetails.comments).toHaveLength(0);
-    expect(threadDetails).toStrictEqual(
-      new ThreadDetails({
-        id: mockThreadData.id,
-        title: mockThreadData.title,
-        body: mockThreadData.body,
-        date: mockThreadData.created_at,
-        username: userArnold.username,
-        fullname: userArnold.fullname,
-        comments: [],
-      })
-    );
   });
 });

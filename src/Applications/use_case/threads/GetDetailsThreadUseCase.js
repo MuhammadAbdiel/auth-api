@@ -26,10 +26,9 @@ class GetDetailsThreadUseCase {
       throw new NotFoundError("Thread not found");
     }
 
-    const { username: threadUsername } = await this._userRepository.getUserById(
-      threadFromDb.user_id
-    );
-    if (!threadUsername) {
+    const { username: threadUsername, fullname: threadFullname } =
+      await this._userRepository.getUserById(threadFromDb.user_id);
+    if (!threadUsername || !threadFullname) {
       throw new InvariantError("User not found");
     }
 
@@ -51,7 +50,7 @@ class GetDetailsThreadUseCase {
       for (const commentData of commentsInThread) {
         const { username: commentUsername, fullname: commentFullname } =
           await this._userRepository.getUserById(commentData.user_id);
-        if (!commentUsername) {
+        if (!commentUsername || !commentFullname) {
           throw new InvariantError("User not found");
         }
 
@@ -75,7 +74,7 @@ class GetDetailsThreadUseCase {
           for (const replyData of repliesInComment) {
             const { username: replyUsername, fullname: replyFullname } =
               await this._userRepository.getUserById(replyData.user_id);
-            if (!replyUsername) {
+            if (!replyUsername || !replyFullname) {
               throw new InvariantError("User not found");
             }
 
