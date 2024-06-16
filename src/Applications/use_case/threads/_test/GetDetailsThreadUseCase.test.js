@@ -143,36 +143,42 @@ describe("GetDetailsThreadUseCase", () => {
         body: mockThreadData.body,
         date: mockThreadData.created_at,
         username: userArnold.username,
+        fullname: userArnold.fullname,
         comments: [
           new CommentDetails({
             id: commentData[0].id,
             content: commentData[0].content,
             date: commentData[0].created_at,
             username: userArnold.username,
+            fullname: userArnold.fullname,
             replies: [
               new CommentReplyDetails({
                 id: replyData[0].id,
                 content: replyData[0].content,
                 date: replyData[0].created_at,
                 username: userDhh.username,
+                fullname: userDhh.fullname,
               }),
               new CommentReplyDetails({
                 id: replyData[1].id,
                 content: replyData[1].content,
                 date: replyData[1].created_at,
                 username: userArnold.username,
+                fullname: userArnold.fullname,
               }),
               new CommentReplyDetails({
                 id: replyData[2].id,
                 content: replyData[2].content,
                 date: replyData[2].created_at,
                 username: userArnold.username,
+                fullname: userArnold.fullname,
               }),
               new CommentReplyDetails({
                 id: replyData[3].id,
                 content: replyData[3].content,
                 date: replyData[3].created_at,
                 username: userArnold.username,
+                fullname: userArnold.fullname,
               }),
             ],
           }),
@@ -181,6 +187,7 @@ describe("GetDetailsThreadUseCase", () => {
             content: commentData[1].content,
             date: commentData[1].created_at,
             username: userArnold.username,
+            fullname: userArnold.fullname,
             replies: [],
           }),
           new CommentDetails({
@@ -188,6 +195,7 @@ describe("GetDetailsThreadUseCase", () => {
             content: commentData[2].content,
             date: commentData[2].created_at,
             username: userArnold.username,
+            fullname: userArnold.fullname,
             replies: [],
           }),
         ],
@@ -268,6 +276,7 @@ describe("GetDetailsThreadUseCase", () => {
         body: mockThreadData.body,
         date: mockThreadData.created_at,
         username: userArnold.username,
+        fullname: userArnold.fullname,
         comments: [],
       })
     );
