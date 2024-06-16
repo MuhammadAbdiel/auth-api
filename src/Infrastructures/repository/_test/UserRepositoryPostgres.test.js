@@ -136,19 +136,20 @@ describe("UserRepositoryPostgres", () => {
       const userId = await userRepositoryPostgres.getIdByUsername("dicoding");
 
       // Assert
-      expect(userId).toEqual("user-321");
+      expect(userId).toStrictEqual("user-321");
     });
   });
 
   describe("getUserById", () => {
-    it("should throw InvariantError when user not found", async () => {
+    it("should throw undefined when user not found", async () => {
       // Arrange
       const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
 
-      // Action & Assert
-      await expect(
-        userRepositoryPostgres.getUserById("user-321")
-      ).rejects.toThrow(InvariantError);
+      // Action
+      const user = await userRepositoryPostgres.getUserById("user-321");
+
+      // Assert
+      expect(user).toBeUndefined();
     });
 
     it("should return user correctly", async () => {
@@ -163,19 +164,20 @@ describe("UserRepositoryPostgres", () => {
       const user = await userRepositoryPostgres.getUserById("user-321");
 
       // Assert
-      expect(user.username).toEqual("dicoding");
+      expect(user.username).toStrictEqual("dicoding");
     });
   });
 
   describe("getOwnProfile", () => {
-    it("should throw InvariantError when user not found", async () => {
+    it("should throw undefined when user not found", async () => {
       // Arrange
       const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
 
-      // Action & Assert
-      await expect(
-        userRepositoryPostgres.getOwnProfile("user-321")
-      ).rejects.toThrow(InvariantError);
+      // Action
+      const user = await userRepositoryPostgres.getOwnProfile("user-321");
+
+      // Assert
+      expect(user).toBeUndefined();
     });
 
     it("should return user correctly", async () => {
@@ -190,7 +192,7 @@ describe("UserRepositoryPostgres", () => {
       const user = await userRepositoryPostgres.getOwnProfile("user-321");
 
       // Assert
-      expect(user.username).toEqual("dicoding");
+      expect(user.username).toStrictEqual("dicoding");
     });
   });
 

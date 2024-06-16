@@ -9,8 +9,8 @@ describe("InvariantError", () => {
     expect(invariantError).toBeInstanceOf(ClientError);
     expect(invariantError).toBeInstanceOf(Error);
 
-    expect(invariantError.statusCode).toEqual(400);
-    expect(invariantError.message).toEqual("an error occurs");
-    expect(invariantError.name).toEqual("InvariantError");
+    expect(invariantError.statusCode).toStrictEqual(400);
+    expect(invariantError.message).toStrictEqual("an error occurs");
+    expect(invariantError.name).toStrictEqual("InvariantError");
   });
 });

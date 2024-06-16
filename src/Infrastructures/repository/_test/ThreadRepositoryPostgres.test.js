@@ -92,25 +92,26 @@ describe("ThreadRepositoryPostgres", () => {
 
       // Assert
       expect(threads).toHaveLength(1);
-      expect(threads[0].id).toEqual("thread-521");
-      expect(threads[0].title).toEqual("Thread test");
-      expect(threads[0].body).toEqual("This is helper thread");
-      expect(threads[0].created_at).toEqual(
+      expect(threads[0].id).toStrictEqual("thread-521");
+      expect(threads[0].title).toStrictEqual("Thread test");
+      expect(threads[0].body).toStrictEqual("This is helper thread");
+      expect(threads[0].created_at).toStrictEqual(
         new Date("2024-06-13T00:00:00.000Z")
       );
-      expect(threads[0].user_id).toEqual("user-123");
+      expect(threads[0].user_id).toStrictEqual("user-123");
     });
   });
 
   describe("getThreadById function", () => {
-    it("should throw NotFoundError if no thread found", async () => {
+    it("should throw undefined if no thread found", async () => {
       // Arrange
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
 
-      // Action & Assert
-      await expect(
-        threadRepositoryPostgres.getThreadById("thread-521")
-      ).rejects.toThrow(NotFoundError);
+      // Action
+      const thread = await threadRepositoryPostgres.getThreadById("thread-521");
+
+      // Assert
+      expect(thread).toBeUndefined();
     });
 
     it("should get the right thread", async () => {
@@ -125,7 +126,7 @@ describe("ThreadRepositoryPostgres", () => {
       const thread = await threadRepositoryPostgres.getThreadById("thread-521");
 
       // Assert
-      expect(thread).toEqual({
+      expect(thread).toStrictEqual({
         id: "thread-521",
         title: "Thread test",
         body: "This is helper thread",

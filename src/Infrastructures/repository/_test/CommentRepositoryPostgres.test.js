@@ -55,10 +55,10 @@ describe("CommentRepositoryPostgres", () => {
       );
 
       expect(comment).toHaveLength(1);
-      expect(comment[0].id).toEqual("comment-222");
-      expect(comment[0].content).toEqual("This is a comment");
-      expect(comment[0].thread_id).toEqual(threadId);
-      expect(comment[0].user_id).toEqual(userId);
+      expect(comment[0].id).toStrictEqual("comment-222");
+      expect(comment[0].content).toStrictEqual("This is a comment");
+      expect(comment[0].thread_id).toStrictEqual(threadId);
+      expect(comment[0].user_id).toStrictEqual(userId);
       expect(comment[0].is_delete).toBe(false);
     });
 
@@ -94,17 +94,20 @@ describe("CommentRepositoryPostgres", () => {
   });
 
   describe("getCommentById", () => {
-    it("should return NotFoundError when comment not found", async () => {
+    it("should return undefined when comment not found", async () => {
       // Arrange
       const commentRepositoryPostgres = new CommentRepositoryPostgress(
         pool,
         {}
       );
 
-      // Action & Assert
-      await expect(
-        commentRepositoryPostgres.getCommentById("wrong-comment")
-      ).rejects.toThrow(NotFoundError);
+      // Action
+      const comment = await commentRepositoryPostgres.getCommentById(
+        "wrong-comment"
+      );
+
+      // Assert
+      expect(comment).toBeUndefined();
     });
 
     it("should return comment correctly", async () => {
@@ -134,23 +137,28 @@ describe("CommentRepositoryPostgres", () => {
       expect(comment).toHaveProperty("user_id", commentData.user_id);
       expect(comment).toHaveProperty("thread_id", commentData.thread_id);
       expect(comment).toHaveProperty("created_at");
-      expect(new Date(comment.created_at)).toEqual(commentData.created_at);
+      expect(new Date(comment.created_at)).toStrictEqual(
+        commentData.created_at
+      );
       expect(comment).toHaveProperty("is_delete", commentData.is_delete);
     });
   });
 
   describe("getCommentByUserId", () => {
-    it("should return NotFoundError when comment not found", async () => {
+    it("should return undefined when comment not found", async () => {
       // Arrange
       const commentRepositoryPostgres = new CommentRepositoryPostgress(
         pool,
         {}
       );
 
-      // Action & Assert
-      await expect(
-        commentRepositoryPostgres.getCommentByUserId("wrong-user-id")
-      ).rejects.toThrow(NotFoundError);
+      // Action
+      const comments = await commentRepositoryPostgres.getCommentByUserId(
+        "wrong-user-id"
+      );
+
+      // Assert
+      expect(comments).toBeUndefined();
     });
 
     it("should return comment correctly", async () => {
@@ -175,11 +183,11 @@ describe("CommentRepositoryPostgres", () => {
       );
 
       // Assert
-      expect(comments.id).toEqual(commentData.id);
-      expect(comments.content).toEqual(commentData.content);
-      expect(comments.user_id).toEqual(commentData.user_id);
-      expect(comments.thread_id).toEqual(commentData.thread_id);
-      expect(comments.is_delete).toEqual(commentData.is_delete);
+      expect(comments.id).toStrictEqual(commentData.id);
+      expect(comments.content).toStrictEqual(commentData.content);
+      expect(comments.user_id).toStrictEqual(commentData.user_id);
+      expect(comments.thread_id).toStrictEqual(commentData.thread_id);
+      expect(comments.is_delete).toStrictEqual(commentData.is_delete);
     });
   });
 
@@ -300,14 +308,14 @@ describe("CommentRepositoryPostgres", () => {
       // Assert
       expect(comments).toHaveLength(3);
       comments.forEach((comment, index) => {
-        expect(comment.id).toEqual(commentsData[index].id);
-        expect(comment.content).toEqual(commentsData[index].content);
-        expect(comment.user_id).toEqual(commentsData[index].user_id);
-        expect(comment.thread_id).toEqual(commentsData[index].thread_id);
-        expect(new Date(comment.created_at)).toEqual(
+        expect(comment.id).toStrictEqual(commentsData[index].id);
+        expect(comment.content).toStrictEqual(commentsData[index].content);
+        expect(comment.user_id).toStrictEqual(commentsData[index].user_id);
+        expect(comment.thread_id).toStrictEqual(commentsData[index].thread_id);
+        expect(new Date(comment.created_at)).toStrictEqual(
           commentsData[index].created_at
         );
-        expect(comment.is_delete).toEqual(commentsData[index].is_delete);
+        expect(comment.is_delete).toStrictEqual(commentsData[index].is_delete);
       });
     });
 
@@ -354,7 +362,7 @@ describe("CommentRepositoryPostgres", () => {
       );
 
       // Assert
-      expect(deletedComment[0].is_delete).toEqual(true);
+      expect(deletedComment[0].is_delete).toStrictEqual(true);
     });
 
     it("should return InvariantError when failed to delete comment", async () => {

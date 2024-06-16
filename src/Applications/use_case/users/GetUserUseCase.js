@@ -1,10 +1,17 @@
+const InvariantError = require("../../../Commons/exceptions/InvariantError");
+
 class GetUserUseCase {
   constructor({ userRepository }) {
     this._userRepository = userRepository;
   }
 
   async execute(userId) {
-    return this._userRepository.getOwnProfile(userId);
+    const user = await this._userRepository.getOwnProfile(userId);
+    if (!user) {
+      throw new InvariantError("User not found");
+    }
+
+    return user;
   }
 }
 

@@ -95,15 +95,18 @@ describe("CommentReplyRepositoryPostgres", () => {
   });
 
   describe("getCommentReplyById", () => {
-    it("should return NotFoundError when comment not found", async () => {
+    it("should return undefined when comment not found", async () => {
       // Arrange
       const commentReplyRepositoryPostgres =
         new CommentReplyRepositoryPostgress(pool, {});
 
-      // Action & Assert
-      await expect(
-        commentReplyRepositoryPostgres.getCommentReplyById("wrong-comment")
-      ).rejects.toThrow(NotFoundError);
+      // Action
+      const comment = await commentReplyRepositoryPostgres.getCommentReplyById(
+        "wrong-comment"
+      );
+
+      // Assert
+      expect(comment).toBeUndefined();
     });
 
     it("should return comment correctly", async () => {
@@ -123,10 +126,10 @@ describe("CommentReplyRepositoryPostgres", () => {
       );
 
       // Assert
-      expect(comment.id).toEqual("reply-333");
-      expect(comment.user_id).toEqual(userId);
-      expect(comment.thread_id).toEqual(threadId);
-      expect(comment.comment_id).toEqual(commentId);
+      expect(comment.id).toStrictEqual("reply-333");
+      expect(comment.user_id).toStrictEqual(userId);
+      expect(comment.thread_id).toStrictEqual(threadId);
+      expect(comment.comment_id).toStrictEqual(commentId);
     });
   });
 
@@ -201,7 +204,7 @@ describe("CommentReplyRepositoryPostgres", () => {
 
       // Assert
       expect(deletedCommentReply).toHaveLength(1);
-      expect(deletedCommentReply[0].is_delete).toEqual(true);
+      expect(deletedCommentReply[0].is_delete).toStrictEqual(true);
     });
 
     it("should return InvariantError when failed to delete comment", async () => {

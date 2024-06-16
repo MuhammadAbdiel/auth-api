@@ -68,8 +68,8 @@ describe("a RegisterUser entities", () => {
     const { username, fullname, password } = new RegisterUser(payload);
 
     // Assert
-    expect(username).toEqual(payload.username);
-    expect(fullname).toEqual(payload.fullname);
-    expect(password).toEqual(payload.password);
+    expect(username).toStrictEqual(payload.username);
+    expect(fullname).toStrictEqual(payload.fullname);
+    expect(password).toStrictEqual(payload.password);
   });
 });

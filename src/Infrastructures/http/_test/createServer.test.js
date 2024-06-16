@@ -12,7 +12,7 @@ describe("HTTP server", () => {
     });
 
     // Assert
-    expect(response.statusCode).toEqual(404);
+    expect(response.statusCode).toStrictEqual(404);
   });
 
   it("should handle server error correctly", async () => {
@@ -33,8 +33,10 @@ describe("HTTP server", () => {
 
     // Assert
     const responseJson = JSON.parse(response.payload);
-    expect(response.statusCode).toEqual(500);
-    expect(responseJson.status).toEqual("error");
-    expect(responseJson.message).toEqual("terjadi kegagalan pada server kami");
+    expect(response.statusCode).toStrictEqual(500);
+    expect(responseJson.status).toStrictEqual("error");
+    expect(responseJson.message).toStrictEqual(
+      "terjadi kegagalan pada server kami"
+    );
   });
 });

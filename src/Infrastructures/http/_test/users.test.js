@@ -38,8 +38,8 @@ describe("/users endpoint", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(201);
-      expect(responseJson.status).toEqual("success");
+      expect(response.statusCode).toStrictEqual(201);
+      expect(responseJson.status).toStrictEqual("success");
       expect(responseJson.data.addedUser).toBeDefined();
     });
 
@@ -60,9 +60,9 @@ describe("/users endpoint", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(400);
-      expect(responseJson.status).toEqual("fail");
-      expect(responseJson.message).toEqual(
+      expect(response.statusCode).toStrictEqual(400);
+      expect(responseJson.status).toStrictEqual("fail");
+      expect(responseJson.message).toStrictEqual(
         "tidak dapat membuat user baru karena properti yang dibutuhkan tidak ada"
       );
     });
@@ -85,9 +85,9 @@ describe("/users endpoint", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(400);
-      expect(responseJson.status).toEqual("fail");
-      expect(responseJson.message).toEqual(
+      expect(response.statusCode).toStrictEqual(400);
+      expect(responseJson.status).toStrictEqual("fail");
+      expect(responseJson.message).toStrictEqual(
         "tidak dapat membuat user baru karena tipe data tidak sesuai"
       );
     });
@@ -110,9 +110,9 @@ describe("/users endpoint", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(400);
-      expect(responseJson.status).toEqual("fail");
-      expect(responseJson.message).toEqual(
+      expect(response.statusCode).toStrictEqual(400);
+      expect(responseJson.status).toStrictEqual("fail");
+      expect(responseJson.message).toStrictEqual(
         "tidak dapat membuat user baru karena karakter username melebihi batas limit"
       );
     });
@@ -135,9 +135,9 @@ describe("/users endpoint", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(400);
-      expect(responseJson.status).toEqual("fail");
-      expect(responseJson.message).toEqual(
+      expect(response.statusCode).toStrictEqual(400);
+      expect(responseJson.status).toStrictEqual("fail");
+      expect(responseJson.message).toStrictEqual(
         "tidak dapat membuat user baru karena username mengandung karakter terlarang"
       );
     });
@@ -161,9 +161,9 @@ describe("/users endpoint", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(400);
-      expect(responseJson.status).toEqual("fail");
-      expect(responseJson.message).toEqual("username tidak tersedia");
+      expect(response.statusCode).toStrictEqual(400);
+      expect(responseJson.status).toStrictEqual("fail");
+      expect(responseJson.message).toStrictEqual("username tidak tersedia");
     });
   });
 
@@ -198,8 +198,8 @@ describe("/users endpoint", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(200);
-      expect(responseJson.status).toEqual("success");
+      expect(response.statusCode).toStrictEqual(200);
+      expect(responseJson.status).toStrictEqual("success");
       expect(responseJson.data.user).toBeDefined();
     });
 
@@ -215,8 +215,8 @@ describe("/users endpoint", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(401);
-      expect(responseJson.error).toEqual("Unauthorized");
+      expect(response.statusCode).toStrictEqual(401);
+      expect(responseJson.error).toStrictEqual("Unauthorized");
     });
 
     it("should response 401 when access token invalid", async () => {
@@ -232,8 +232,8 @@ describe("/users endpoint", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(401);
-      expect(responseJson.error).toEqual("Unauthorized");
+      expect(response.statusCode).toStrictEqual(401);
+      expect(responseJson.error).toStrictEqual("Unauthorized");
     });
 
     it("should response 400 when user not found", async () => {
@@ -252,8 +252,8 @@ describe("/users endpoint", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(400);
-      expect(responseJson.status).toEqual("fail");
+      expect(response.statusCode).toStrictEqual(400);
+      expect(responseJson.status).toStrictEqual("fail");
     });
   });
 
@@ -289,8 +289,8 @@ describe("/users endpoint", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(200);
-      expect(responseJson.status).toEqual("success");
+      expect(response.statusCode).toStrictEqual(200);
+      expect(responseJson.status).toStrictEqual("success");
       expect(responseJson.data.user).toBeDefined();
     });
 
@@ -316,8 +316,8 @@ describe("/users endpoint", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(401);
-      expect(responseJson.error).toEqual("Unauthorized");
+      expect(response.statusCode).toStrictEqual(401);
+      expect(responseJson.error).toStrictEqual("Unauthorized");
     });
 
     it("should response 401 when access token invalid", async () => {
@@ -343,8 +343,8 @@ describe("/users endpoint", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(401);
-      expect(responseJson.error).toEqual("Unauthorized");
+      expect(response.statusCode).toStrictEqual(401);
+      expect(responseJson.error).toStrictEqual("Unauthorized");
     });
 
     it("should response 400 when user not found", async () => {
@@ -363,8 +363,8 @@ describe("/users endpoint", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(400);
-      expect(responseJson.status).toEqual("fail");
+      expect(response.statusCode).toStrictEqual(400);
+      expect(responseJson.status).toStrictEqual("fail");
     });
   });
 });

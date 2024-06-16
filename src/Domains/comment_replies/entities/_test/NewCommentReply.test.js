@@ -45,6 +45,6 @@ describe("a NewCommentReply entities", () => {
     const newCommentReply = new NewCommentReply(payload);
 
     // Assert
-    expect(newCommentReply.content).toEqual(payload.content);
+    expect(newCommentReply.content).toStrictEqual(payload.content);
   });
 });

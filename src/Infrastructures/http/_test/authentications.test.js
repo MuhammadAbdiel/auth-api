@@ -43,8 +43,8 @@ describe("/authentications endpoint", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(201);
-      expect(responseJson.status).toEqual("success");
+      expect(response.statusCode).toStrictEqual(201);
+      expect(responseJson.status).toStrictEqual("success");
       expect(responseJson.data.accessToken).toBeDefined();
       expect(responseJson.data.refreshToken).toBeDefined();
     });
@@ -66,9 +66,9 @@ describe("/authentications endpoint", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(400);
-      expect(responseJson.status).toEqual("fail");
-      expect(responseJson.message).toEqual("username tidak ditemukan");
+      expect(response.statusCode).toStrictEqual(400);
+      expect(responseJson.status).toStrictEqual("fail");
+      expect(responseJson.message).toStrictEqual("username tidak ditemukan");
     });
 
     it("should response 401 if password wrong", async () => {
@@ -98,9 +98,9 @@ describe("/authentications endpoint", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(401);
-      expect(responseJson.status).toEqual("fail");
-      expect(responseJson.message).toEqual(
+      expect(response.statusCode).toStrictEqual(401);
+      expect(responseJson.status).toStrictEqual("fail");
+      expect(responseJson.message).toStrictEqual(
         "kredensial yang Anda masukkan salah"
       );
     });
@@ -121,9 +121,9 @@ describe("/authentications endpoint", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(400);
-      expect(responseJson.status).toEqual("fail");
-      expect(responseJson.message).toEqual(
+      expect(response.statusCode).toStrictEqual(400);
+      expect(responseJson.status).toStrictEqual("fail");
+      expect(responseJson.message).toStrictEqual(
         "harus mengirimkan username dan password"
       );
     });
@@ -145,9 +145,9 @@ describe("/authentications endpoint", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(400);
-      expect(responseJson.status).toEqual("fail");
-      expect(responseJson.message).toEqual(
+      expect(response.statusCode).toStrictEqual(400);
+      expect(responseJson.status).toStrictEqual("fail");
+      expect(responseJson.message).toStrictEqual(
         "username dan password harus string"
       );
     });
@@ -190,8 +190,8 @@ describe("/authentications endpoint", () => {
       });
 
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(200);
-      expect(responseJson.status).toEqual("success");
+      expect(response.statusCode).toStrictEqual(200);
+      expect(responseJson.status).toStrictEqual("success");
       expect(responseJson.data.accessToken).toBeDefined();
     });
 
@@ -207,9 +207,11 @@ describe("/authentications endpoint", () => {
       });
 
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(400);
-      expect(responseJson.status).toEqual("fail");
-      expect(responseJson.message).toEqual("harus mengirimkan token refresh");
+      expect(response.statusCode).toStrictEqual(400);
+      expect(responseJson.status).toStrictEqual("fail");
+      expect(responseJson.message).toStrictEqual(
+        "harus mengirimkan token refresh"
+      );
     });
 
     it("should return 400 if refresh token not string", async () => {
@@ -226,9 +228,9 @@ describe("/authentications endpoint", () => {
       });
 
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(400);
-      expect(responseJson.status).toEqual("fail");
-      expect(responseJson.message).toEqual("refresh token harus string");
+      expect(response.statusCode).toStrictEqual(400);
+      expect(responseJson.status).toStrictEqual("fail");
+      expect(responseJson.message).toStrictEqual("refresh token harus string");
     });
 
     it("should return 400 if refresh token not valid", async () => {
@@ -246,9 +248,9 @@ describe("/authentications endpoint", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(400);
-      expect(responseJson.status).toEqual("fail");
-      expect(responseJson.message).toEqual("refresh token tidak valid");
+      expect(response.statusCode).toStrictEqual(400);
+      expect(responseJson.status).toStrictEqual("fail");
+      expect(responseJson.message).toStrictEqual("refresh token tidak valid");
     });
 
     it("should return 400 if refresh token not registered in database", async () => {
@@ -269,9 +271,9 @@ describe("/authentications endpoint", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(400);
-      expect(responseJson.status).toEqual("fail");
-      expect(responseJson.message).toEqual(
+      expect(response.statusCode).toStrictEqual(400);
+      expect(responseJson.status).toStrictEqual("fail");
+      expect(responseJson.message).toStrictEqual(
         "refresh token tidak ditemukan di database"
       );
     });
@@ -295,8 +297,8 @@ describe("/authentications endpoint", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(200);
-      expect(responseJson.status).toEqual("success");
+      expect(response.statusCode).toStrictEqual(200);
+      expect(responseJson.status).toStrictEqual("success");
     });
 
     it("should response 400 if refresh token not registered in database", async () => {
@@ -315,9 +317,9 @@ describe("/authentications endpoint", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(400);
-      expect(responseJson.status).toEqual("fail");
-      expect(responseJson.message).toEqual(
+      expect(response.statusCode).toStrictEqual(400);
+      expect(responseJson.status).toStrictEqual("fail");
+      expect(responseJson.message).toStrictEqual(
         "refresh token tidak ditemukan di database"
       );
     });
@@ -334,9 +336,11 @@ describe("/authentications endpoint", () => {
       });
 
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(400);
-      expect(responseJson.status).toEqual("fail");
-      expect(responseJson.message).toEqual("harus mengirimkan token refresh");
+      expect(response.statusCode).toStrictEqual(400);
+      expect(responseJson.status).toStrictEqual("fail");
+      expect(responseJson.message).toStrictEqual(
+        "harus mengirimkan token refresh"
+      );
     });
 
     it("should response 400 if refresh token not string", async () => {
@@ -353,9 +357,9 @@ describe("/authentications endpoint", () => {
       });
 
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(400);
-      expect(responseJson.status).toEqual("fail");
-      expect(responseJson.message).toEqual("refresh token harus string");
+      expect(response.statusCode).toStrictEqual(400);
+      expect(responseJson.status).toStrictEqual("fail");
+      expect(responseJson.message).toStrictEqual("refresh token harus string");
     });
   });
 });

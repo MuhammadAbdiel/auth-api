@@ -15,8 +15,8 @@ describe("BcryptEncryptionHelper", () => {
       );
 
       // Assert
-      expect(typeof encryptedPassword).toEqual("string");
-      expect(encryptedPassword).not.toEqual("plain_password");
+      expect(typeof encryptedPassword).toStrictEqual("string");
+      expect(encryptedPassword).not.toStrictEqual("plain_password");
       expect(spyHash).toHaveBeenCalledWith("plain_password", 10); // 10 adalah nilai saltRound default untuk BcryptEncryptionHelper
     });
   });

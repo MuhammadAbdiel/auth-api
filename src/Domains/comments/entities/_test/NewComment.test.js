@@ -45,6 +45,6 @@ describe("a NewComment entities", () => {
     const newComment = new NewComment(payload);
 
     // Assert
-    expect(newComment.content).toEqual(payload.content);
+    expect(newComment.content).toStrictEqual(payload.content);
   });
 });

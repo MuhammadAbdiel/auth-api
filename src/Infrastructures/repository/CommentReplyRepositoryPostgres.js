@@ -44,11 +44,6 @@ class CommentReplyRepositoryPostgres extends CommentReplyRepository {
     };
 
     const result = await this._pool.query(query);
-
-    if (!result.rowCount) {
-      throw new NotFoundError("comment reply not found");
-    }
-
     const comment = result.rows[0];
 
     return comment;
@@ -61,10 +56,6 @@ class CommentReplyRepositoryPostgres extends CommentReplyRepository {
     };
 
     const result = await this._pool.query(query);
-
-    if (!result.rowCount) {
-      return [];
-    }
 
     return result.rows;
   }

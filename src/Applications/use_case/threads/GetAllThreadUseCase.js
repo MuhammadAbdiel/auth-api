@@ -1,3 +1,5 @@
+const InvariantError = require("../../../Commons/exceptions/InvariantError");
+
 class GetAllThreadUseCase {
   constructor({ threadRepository, userRepository }) {
     this._threadRepository = threadRepository;
@@ -13,6 +15,9 @@ class GetAllThreadUseCase {
         const { username, fullname } = await this._userRepository.getUserById(
           thread.user_id
         );
+        if (!username || !fullname) {
+          throw new InvariantError("User not found");
+        }
 
         const response = {
           ...thread,

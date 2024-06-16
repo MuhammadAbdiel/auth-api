@@ -49,11 +49,11 @@ describe("a CommentDetails", () => {
     const commentDetails = new CommentDetails(payload);
 
     // Assert
-    expect(commentDetails.id).toEqual(payload.id);
-    expect(commentDetails.content).toEqual(payload.content);
-    expect(commentDetails.date).toEqual(payload.date);
-    expect(commentDetails.username).toEqual(payload.username);
-    expect(commentDetails.replies).toEqual(payload.replies);
+    expect(commentDetails.id).toStrictEqual(payload.id);
+    expect(commentDetails.content).toStrictEqual(payload.content);
+    expect(commentDetails.date).toStrictEqual(payload.date);
+    expect(commentDetails.username).toStrictEqual(payload.username);
+    expect(commentDetails.replies).toStrictEqual(payload.replies);
     expect(commentDetails).toBeDefined();
   });
 });

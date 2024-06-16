@@ -40,8 +40,8 @@ describe("GetUser entities", () => {
     const getUser = new GetUser(payload);
 
     // Assert
-    expect(getUser.id).toEqual(payload.id);
-    expect(getUser.username).toEqual(payload.username);
-    expect(getUser.fullname).toEqual(payload.fullname);
+    expect(getUser.id).toStrictEqual(payload.id);
+    expect(getUser.username).toStrictEqual(payload.username);
+    expect(getUser.fullname).toStrictEqual(payload.fullname);
   });
 });
