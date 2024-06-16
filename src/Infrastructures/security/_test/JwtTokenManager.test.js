@@ -22,7 +22,7 @@ describe("JwtTokenManager", () => {
         payload,
         process.env.ACCESS_TOKEN_KEY
       );
-      expect(accessToken).toEqual("mock_token");
+      expect(accessToken).toStrictEqual("mock_token");
     });
   });
 
@@ -45,7 +45,7 @@ describe("JwtTokenManager", () => {
         payload,
         process.env.REFRESH_TOKEN_KEY
       );
-      expect(refreshToken).toEqual("mock_token");
+      expect(refreshToken).toStrictEqual("mock_token");
     });
   });
 
@@ -90,7 +90,7 @@ describe("JwtTokenManager", () => {
         await jwtTokenManager.decodePayload(accessToken);
 
       // Action & Assert
-      expect(expectedUsername).toEqual("dicoding");
+      expect(expectedUsername).toStrictEqual("dicoding");
     });
   });
 });

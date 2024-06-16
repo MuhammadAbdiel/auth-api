@@ -40,8 +40,8 @@ describe("a RegisteredUser entities", () => {
     const registeredUser = new RegisteredUser(payload);
 
     // Assert
-    expect(registeredUser.id).toEqual(payload.id);
-    expect(registeredUser.username).toEqual(payload.username);
-    expect(registeredUser.fullname).toEqual(payload.fullname);
+    expect(registeredUser.id).toStrictEqual(payload.id);
+    expect(registeredUser.username).toStrictEqual(payload.username);
+    expect(registeredUser.fullname).toStrictEqual(payload.fullname);
   });
 });

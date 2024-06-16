@@ -30,7 +30,7 @@ describe("a CommentReplyDetails", () => {
     );
   });
 
-  it("should throw error when payload contain wrong data type", () => {
+  it("should get comment reply details correctly", () => {
     // Arrange
     const payload = {
       id: "something",
@@ -43,10 +43,10 @@ describe("a CommentReplyDetails", () => {
     const commentReplyDetails = new CommentReplyDetails(payload);
 
     // Assert
-    expect(commentReplyDetails.id).toEqual(payload.id);
-    expect(commentReplyDetails.content).toEqual(payload.content);
-    expect(commentReplyDetails.date).toEqual(payload.date);
-    expect(commentReplyDetails.username).toEqual(payload.username);
+    expect(commentReplyDetails.id).toStrictEqual(payload.id);
+    expect(commentReplyDetails.content).toStrictEqual(payload.content);
+    expect(commentReplyDetails.date).toStrictEqual(payload.date);
+    expect(commentReplyDetails.username).toStrictEqual(payload.username);
     expect(commentReplyDetails).toBeDefined();
   });
 });

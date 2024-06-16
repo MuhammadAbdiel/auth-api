@@ -1,6 +1,8 @@
 const ThreadDetails = require("../../../Domains/threads/entities/ThreadDetails");
 const CommentDetails = require("../../../Domains/comments/entities/CommentDetails");
 const CommentReplyDetails = require("../../../Domains/comment_replies/entities/CommentReplyDetails");
+const NotFoundError = require("../../../Commons/exceptions/NotFoundError");
+const InvariantError = require("../../../Commons/exceptions/InvariantError");
 
 class GetDetailsThreadUseCase {
   constructor({
@@ -20,9 +22,17 @@ class GetDetailsThreadUseCase {
     const threadFromDb = await this._threadRepository.getThreadById(
       useCaseThreadId
     );
+    if (!threadFromDb) {
+      throw new NotFoundError("Thread not found");
+    }
+
     const { username: threadUsername } = await this._userRepository.getUserById(
       threadFromDb.user_id
     );
+    if (!threadUsername) {
+      throw new InvariantError("User not found");
+    }
+
     const thread = new ThreadDetails({
       id: threadFromDb.id,
       title: threadFromDb.title,
@@ -40,6 +50,10 @@ class GetDetailsThreadUseCase {
       for (const commentData of commentsInThread) {
         const { username: commentUsername } =
           await this._userRepository.getUserById(commentData.user_id);
+        if (!commentUsername) {
+          throw new InvariantError("User not found");
+        }
+
         const commentDetails = new CommentDetails({
           id: commentData.id,
           content: commentData.is_delete
@@ -59,6 +73,10 @@ class GetDetailsThreadUseCase {
           for (const replyData of repliesInComment) {
             const { username: replyUsername } =
               await this._userRepository.getUserById(replyData.user_id);
+            if (!replyUsername) {
+              throw new InvariantError("User not found");
+            }
+
             const commentReplyDetails = new CommentReplyDetails({
               id: replyData.id,
               content: replyData.is_delete

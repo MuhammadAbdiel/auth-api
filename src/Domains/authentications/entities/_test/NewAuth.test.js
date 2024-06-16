@@ -38,7 +38,7 @@ describe("NewAuth entities", () => {
 
     // Assert
     expect(newAuth).toBeInstanceOf(NewAuth);
-    expect(newAuth.accessToken).toEqual(payload.accessToken);
-    expect(newAuth.refreshToken).toEqual(payload.refreshToken);
+    expect(newAuth.accessToken).toStrictEqual(payload.accessToken);
+    expect(newAuth.refreshToken).toStrictEqual(payload.refreshToken);
   });
 });

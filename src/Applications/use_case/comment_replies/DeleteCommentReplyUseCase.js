@@ -1,3 +1,5 @@
+const NotFoundError = require("../../../Commons/exceptions/NotFoundError");
+
 class DeleteCommentReplyUseCase {
   constructor({ commentReplyRepository, ownerValidator }) {
     this._commentReplyRepository = commentReplyRepository;
@@ -14,6 +16,10 @@ class DeleteCommentReplyUseCase {
     const commentReply = await this._commentReplyRepository.getCommentReplyById(
       useCaseCommentReplyId
     );
+    if (!commentReply) {
+      throw new NotFoundError("comment reply not found");
+    }
+
     // verify the owner of the comment
     await this._ownerValidator.verifyOwner(
       useCaseCredential,

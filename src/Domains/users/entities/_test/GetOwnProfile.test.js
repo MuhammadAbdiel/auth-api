@@ -40,8 +40,8 @@ describe("a GetOwnProfile entities", () => {
     const getOwnProfile = new GetOwnProfile(payload);
 
     // Assert
-    expect(getOwnProfile.id).toEqual(payload.id);
-    expect(getOwnProfile.username).toEqual(payload.username);
-    expect(getOwnProfile.fullname).toEqual(payload.fullname);
+    expect(getOwnProfile.id).toStrictEqual(payload.id);
+    expect(getOwnProfile.username).toStrictEqual(payload.username);
+    expect(getOwnProfile.fullname).toStrictEqual(payload.fullname);
   });
 });

@@ -100,8 +100,8 @@ describe("/threads/{threadId}/comments/{commentId}/replies endpoint", () => {
 
       //Assert
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(201);
-      expect(responseJson.status).toEqual("success");
+      expect(response.statusCode).toStrictEqual(201);
+      expect(responseJson.status).toStrictEqual("success");
       expect(responseJson.data.addedReply).toBeDefined();
     });
   });
@@ -150,8 +150,8 @@ describe("/threads/{threadId}/comments/{commentId}/replies endpoint", () => {
 
       //Assert
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(200);
-      expect(responseJson.status).toEqual("success");
+      expect(response.statusCode).toStrictEqual(200);
+      expect(responseJson.status).toStrictEqual("success");
     });
 
     it("should throw 403 if user not the owner", async () => {
@@ -204,8 +204,8 @@ describe("/threads/{threadId}/comments/{commentId}/replies endpoint", () => {
       });
 
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(403);
-      expect(responseJson.status).toEqual("fail");
+      expect(response.statusCode).toStrictEqual(403);
+      expect(responseJson.status).toStrictEqual("fail");
     });
   });
 });

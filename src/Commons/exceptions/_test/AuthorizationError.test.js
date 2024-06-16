@@ -9,8 +9,8 @@ describe("AuthorizationError", () => {
     expect(authenticationError).toBeInstanceOf(ClientError);
     expect(authenticationError).toBeInstanceOf(Error);
 
-    expect(authenticationError.statusCode).toEqual(403);
-    expect(authenticationError.message).toEqual("authorization error!");
-    expect(authenticationError.name).toEqual("AuthorizationError");
+    expect(authenticationError.statusCode).toStrictEqual(403);
+    expect(authenticationError.message).toStrictEqual("authorization error!");
+    expect(authenticationError.name).toStrictEqual("AuthorizationError");
   });
 });

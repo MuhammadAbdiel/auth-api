@@ -134,7 +134,7 @@ describe("GetDetailsThreadUseCase", () => {
 
     // Assert
     expect(threadDetails.comments).toHaveLength(3);
-    expect(threadDetails).toEqual(
+    expect(threadDetails).toStrictEqual(
       new ThreadDetails({
         id: mockThreadData.id,
         title: mockThreadData.title,
@@ -257,7 +257,7 @@ describe("GetDetailsThreadUseCase", () => {
 
     // Assert
     expect(threadDetails.comments).toHaveLength(0);
-    expect(threadDetails).toEqual(
+    expect(threadDetails).toStrictEqual(
       new ThreadDetails({
         id: mockThreadData.id,
         title: mockThreadData.title,

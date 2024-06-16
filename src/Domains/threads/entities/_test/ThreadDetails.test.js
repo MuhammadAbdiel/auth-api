@@ -49,12 +49,12 @@ describe("a ThreadDetails", () => {
     const threadDetails = new ThreadDetails(payload);
 
     // Assert
-    expect(threadDetails.id).toEqual(payload.id);
-    expect(threadDetails.title).toEqual(payload.title);
-    expect(threadDetails.body).toEqual(payload.body);
-    expect(threadDetails.date).toEqual(payload.date);
-    expect(threadDetails.username).toEqual(payload.username);
-    expect(threadDetails.comments).toEqual(payload.comments);
+    expect(threadDetails.id).toStrictEqual(payload.id);
+    expect(threadDetails.title).toStrictEqual(payload.title);
+    expect(threadDetails.body).toStrictEqual(payload.body);
+    expect(threadDetails.date).toStrictEqual(payload.date);
+    expect(threadDetails.username).toStrictEqual(payload.username);
+    expect(threadDetails.comments).toStrictEqual(payload.comments);
     expect(threadDetails).toBeDefined();
   });
 });

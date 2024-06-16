@@ -69,8 +69,8 @@ describe("/threads endpoint", () => {
 
       //Assert
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(201);
-      expect(responseJson.status).toEqual("success");
+      expect(response.statusCode).toStrictEqual(201);
+      expect(responseJson.status).toStrictEqual("success");
       expect(responseJson.data.addedThread).toBeDefined();
     });
 
@@ -95,8 +95,8 @@ describe("/threads endpoint", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(401);
-      expect(responseJson.error).toEqual("Unauthorized");
+      expect(response.statusCode).toStrictEqual(401);
+      expect(responseJson.error).toStrictEqual("Unauthorized");
     });
 
     it("should response 400 if bad payload", async () => {
@@ -143,9 +143,9 @@ describe("/threads endpoint", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(400);
-      expect(responseJson.status).toEqual("fail");
-      expect(responseJson.message).toEqual(
+      expect(response.statusCode).toStrictEqual(400);
+      expect(responseJson.status).toStrictEqual("fail");
+      expect(responseJson.message).toStrictEqual(
         "cannot make a new thread, payload not correct"
       );
     });
@@ -189,8 +189,8 @@ describe("/threads endpoint", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(200);
-      expect(responseJson.status).toEqual("success");
+      expect(response.statusCode).toStrictEqual(200);
+      expect(responseJson.status).toStrictEqual("success");
       expect(responseJson.data.threads).toBeDefined();
       expect(Array.isArray(responseJson.data.threads)).toBe(true);
     });
@@ -262,8 +262,8 @@ describe("/threads endpoint", () => {
 
       //Assert
       const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(200);
-      expect(responseJson.status).toEqual("success");
+      expect(response.statusCode).toStrictEqual(200);
+      expect(responseJson.status).toStrictEqual("success");
       expect(responseJson.data.thread).toBeDefined();
     });
   });
