@@ -32,11 +32,11 @@ describe("GetDetailsThreadUseCase", () => {
     const commentData = [
       {
         id: "comment-123",
-        content: "this is first",
+        content: "**komentar telah dihapus**",
         created_at: "2023-08-17 20:38:31.448",
         user_id: "user-111",
         thread_id: "thread-123",
-        is_delete: false,
+        is_delete: true,
       },
       {
         id: "comment-222",
@@ -59,11 +59,11 @@ describe("GetDetailsThreadUseCase", () => {
     const replyData = [
       {
         id: "reply-123",
-        content: "this is first reply",
+        content: "**balasan telah dihapus**",
         created_at: "2023-08-18 20:38:31.448",
         user_id: "user-222",
         comment_id: "comment-123",
-        is_delete: false,
+        is_delete: true,
       },
       {
         id: "reply-124",
@@ -144,41 +144,31 @@ describe("GetDetailsThreadUseCase", () => {
         comments: [
           new CommentDetails({
             id: commentData[0].id,
-            content: commentData[0].is_delete
-              ? "**komentar telah dihapus**"
-              : commentData[0].content,
+            content: commentData[0].content,
             date: commentData[0].created_at,
             username: userArnold.username,
             replies: [
               new CommentReplyDetails({
                 id: replyData[0].id,
-                content: replyData[0].is_delete
-                  ? "**balasan telah dihapus**"
-                  : replyData[0].content,
+                content: replyData[0].content,
                 date: replyData[0].created_at,
                 username: userDhh.username,
               }),
               new CommentReplyDetails({
                 id: replyData[1].id,
-                content: replyData[1].is_delete
-                  ? "**balasan telah dihapus**"
-                  : replyData[1].content,
+                content: replyData[1].content,
                 date: replyData[1].created_at,
                 username: userArnold.username,
               }),
               new CommentReplyDetails({
                 id: replyData[2].id,
-                content: replyData[2].is_delete
-                  ? "**balasan telah dihapus**"
-                  : replyData[2].content,
+                content: replyData[2].content,
                 date: replyData[2].created_at,
                 username: userArnold.username,
               }),
               new CommentReplyDetails({
                 id: replyData[3].id,
-                content: replyData[3].is_delete
-                  ? "**balasan telah dihapus**"
-                  : replyData[3].content,
+                content: replyData[3].content,
                 date: replyData[3].created_at,
                 username: userArnold.username,
               }),
@@ -186,18 +176,14 @@ describe("GetDetailsThreadUseCase", () => {
           }),
           new CommentDetails({
             id: commentData[1].id,
-            content: commentData[1].is_delete
-              ? "**komentar telah dihapus**"
-              : commentData[1].content,
+            content: commentData[1].content,
             date: commentData[1].created_at,
             username: userArnold.username,
             replies: [],
           }),
           new CommentDetails({
             id: commentData[2].id,
-            content: commentData[2].is_delete
-              ? "**komentar telah dihapus**"
-              : commentData[2].content,
+            content: commentData[2].content,
             date: commentData[2].created_at,
             username: userArnold.username,
             replies: [],
