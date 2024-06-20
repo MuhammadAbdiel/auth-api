@@ -141,15 +141,14 @@ describe("UserRepositoryPostgres", () => {
   });
 
   describe("getUserById", () => {
-    it("should throw undefined when user not found", async () => {
+    it("should throw InvariantError when user not found", async () => {
       // Arrange
       const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
 
-      // Action
-      const user = await userRepositoryPostgres.getUserById("user-321");
-
-      // Assert
-      expect(user).toBeUndefined();
+      // Action & Assert
+      await expect(
+        userRepositoryPostgres.getUserById("user-321")
+      ).rejects.toThrow(InvariantError);
     });
 
     it("should return user correctly", async () => {
@@ -169,15 +168,14 @@ describe("UserRepositoryPostgres", () => {
   });
 
   describe("getOwnProfile", () => {
-    it("should throw undefined when user not found", async () => {
+    it("should throw InvariantError when user not found", async () => {
       // Arrange
       const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
 
-      // Action
-      const user = await userRepositoryPostgres.getOwnProfile("user-321");
-
-      // Assert
-      expect(user).toBeUndefined();
+      // Action & Assert
+      await expect(
+        userRepositoryPostgres.getOwnProfile("user-321")
+      ).rejects.toThrow(InvariantError);
     });
 
     it("should return user correctly", async () => {

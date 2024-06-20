@@ -23,15 +23,14 @@ describe("DeleteCommentReplyUseCase", () => {
 
     /** creating dependency of use case */
     const mockCommentReplyRepository = new CommentReplyRepository();
-    const mockOwnerValidator = new OwnerValidator();
 
     /** mocking needed fucntion */
-    mockCommentReplyRepository.getCommentReplyById = jest
+    mockCommentReplyRepository.verifyCommentReplyAvailability = jest
       .fn()
       .mockImplementation(() => Promise.resolve(commentAvailable));
-    mockOwnerValidator.verifyOwner = jest
+    mockCommentReplyRepository.verifyCommentReplyOwner = jest
       .fn()
-      .mockImplementation(() => Promise.resolve());
+      .mockImplementation(() => Promise.resolve(1));
     mockCommentReplyRepository.deleteCommentReply = jest
       .fn()
       .mockImplementation(() => Promise.resolve());
@@ -39,7 +38,6 @@ describe("DeleteCommentReplyUseCase", () => {
     /** create use case instance */
     const deleteCommentReplyUseCase = new DeleteCommentReplyUseCase({
       commentReplyRepository: mockCommentReplyRepository,
-      ownerValidator: mockOwnerValidator,
     });
 
     // Action
@@ -51,13 +49,11 @@ describe("DeleteCommentReplyUseCase", () => {
     );
 
     // Assert
-    expect(mockCommentReplyRepository.getCommentReplyById).toHaveBeenCalledWith(
-      useCaseCommentReplyId
-    );
-    expect(mockOwnerValidator.verifyOwner).toHaveBeenCalledWith(
-      useCaseCredential,
-      commentAvailable.user_id,
-      "comment reply"
-    );
+    expect(
+      mockCommentReplyRepository.verifyCommentReplyAvailability
+    ).toHaveBeenCalledWith(useCaseCommentReplyId);
+    expect(
+      mockCommentReplyRepository.verifyCommentReplyOwner
+    ).toHaveBeenCalledWith(useCaseCommentReplyId, useCaseCredential);
   });
 });

@@ -5,6 +5,12 @@ class CommentReplyRepository {
   async getCommentReplyById(commentReplyId) {
     throw new Error("COMMENT_REPLY_REPOSITORY.METHOD_NOT_IMPLEMENTED");
   }
+  async verifyCommentReplyAvailability(commentReplyId) {
+    throw new Error("COMMENT_REPLY_REPOSITORY.METHOD_NOT_IMPLEMENTED");
+  }
+  async verifyCommentReplyOwner(commentReplyId, ownerId) {
+    throw new Error("COMMENT_REPLY_REPOSITORY.METHOD_NOT_IMPLEMENTED");
+  }
   async getCommentReplyByCommentId(commentId) {
     throw new Error("COMMENT_REPLY_REPOSITORY.METHOD_NOT_IMPLEMENTED");
   }

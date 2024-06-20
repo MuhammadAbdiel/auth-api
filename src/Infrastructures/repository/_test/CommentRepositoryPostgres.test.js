@@ -55,6 +55,16 @@ describe("CommentRepositoryPostgres", () => {
       );
 
       expect(comment).toHaveLength(1);
+      expect(comment).toStrictEqual([
+        {
+          id: "comment-222",
+          content: "This is a comment",
+          thread_id: threadId,
+          user_id: userId,
+          is_delete: false,
+          created_at: comment[0].created_at,
+        },
+      ]);
       expect(comment[0].id).toStrictEqual("comment-222");
       expect(comment[0].content).toStrictEqual("This is a comment");
       expect(comment[0].thread_id).toStrictEqual(threadId);

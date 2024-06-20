@@ -2,6 +2,7 @@ const InvariantError = require("../../Commons/exceptions/InvariantError");
 const NotFoundError = require("../../Commons/exceptions/NotFoundError");
 const CommentReplyRepository = require("../../Domains/comment_replies/CommentReplyRepository");
 const AddedCommentReply = require("../../Domains/comment_replies/entities/AddedCommentReply");
+const AuthorizationError = require("../../Commons/exceptions/AuthorizationError");
 
 class CommentReplyRepositoryPostgres extends CommentReplyRepository {
   constructor(pool, idGenerator) {
@@ -47,6 +48,36 @@ class CommentReplyRepositoryPostgres extends CommentReplyRepository {
     const comment = result.rows[0];
 
     return comment;
+  }
+
+  async verifyCommentReplyAvailability(commentReplyId) {
+    const query = {
+      text: "SELECT * FROM comment_replies WHERE id = $1",
+      values: [commentReplyId],
+    };
+
+    const { rowCount } = await this._pool.query(query);
+
+    if (!rowCount) {
+      throw new NotFoundError("comment reply not found");
+    }
+
+    return rowCount;
+  }
+
+  async verifyCommentReplyOwner(commentReplyId, ownerId) {
+    const query = {
+      text: "SELECT 1 FROM comment_replies WHERE id = $1 AND user_id = $2",
+      values: [commentReplyId, ownerId],
+    };
+
+    const { rowCount } = await this._pool.query(query);
+
+    if (!rowCount) {
+      throw new AuthorizationError("You are not the owner of this comment");
+    }
+
+    return rowCount;
   }
 
   async getCommentReplyByCommentId(commentId) {

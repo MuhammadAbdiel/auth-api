@@ -44,13 +44,13 @@ describe("AddCommentReplyUseCase", () => {
     const mockUserRepository = new UserRepository();
 
     /** mocking needed function */
-    mockCommentRepository.getCommentById = jest
+    mockCommentRepository.verifyCommentInThreadAvailability = jest
       .fn()
       .mockImplementation(() => Promise.resolve(useCaseCommentId));
-    mockThreadRepository.getThreadById = jest
+    mockThreadRepository.verifyThreadAvailability = jest
       .fn()
       .mockImplementation(() => Promise.resolve(useCaseThreadId));
-    mockUserRepository.getUserById = jest
+    mockUserRepository.verifyUserAvailability = jest
       .fn()
       .mockImplementation(() => Promise.resolve(useCaseCredential));
     mockCommentReplyRepository.addCommentReply = jest
@@ -82,10 +82,13 @@ describe("AddCommentReplyUseCase", () => {
       })
     );
 
-    expect(mockThreadRepository.getThreadById).toHaveBeenCalledWith(
+    expect(
+      mockCommentRepository.verifyCommentInThreadAvailability
+    ).toHaveBeenCalledWith(useCaseCommentId.id, useCaseThreadId.id);
+    expect(mockThreadRepository.verifyThreadAvailability).toHaveBeenCalledWith(
       useCaseThreadId.id
     );
-    expect(mockUserRepository.getUserById).toHaveBeenCalledWith(
+    expect(mockUserRepository.verifyUserAvailability).toHaveBeenCalledWith(
       useCaseCredential.id
     );
     expect(mockCommentReplyRepository.addCommentReply).toHaveBeenCalledWith(

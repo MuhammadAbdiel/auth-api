@@ -6,12 +6,7 @@ class GetUserUseCase {
   }
 
   async execute(userId) {
-    const user = await this._userRepository.getOwnProfile(userId);
-    if (!user) {
-      throw new InvariantError("User not found");
-    }
-
-    return user;
+    return await this._userRepository.getOwnProfile(userId);
   }
 }
 

@@ -8,6 +8,7 @@ const CommentReplyRepositoryPostgress = require("../CommentReplyRepositoryPostgr
 const AddedCommentReply = require("../../../Domains/comment_replies/entities/AddedCommentReply");
 const InvariantError = require("../../../Commons/exceptions/InvariantError");
 const NotFoundError = require("../../../Commons/exceptions/NotFoundError");
+const AuthorizationError = require("../../../Commons/exceptions/AuthorizationError");
 
 describe("CommentReplyRepositoryPostgres", () => {
   // Pre-requisite
@@ -176,6 +177,77 @@ describe("CommentReplyRepositoryPostgres", () => {
 
       // Assert
       expect(comments).toHaveLength(3);
+    });
+  });
+
+  describe("verifyCommentReplyAvailability", () => {
+    it("should return NotFoundError when comment reply not found", async () => {
+      // Arrange
+      const commentReplyRepositoryPostgres =
+        new CommentReplyRepositoryPostgress(pool, {});
+
+      // Action & Assert
+      await expect(
+        commentReplyRepositoryPostgres.verifyCommentReplyAvailability(
+          "wrong-reply"
+        )
+      ).rejects.toThrow(NotFoundError);
+    });
+
+    it("should not return NotFoundError when comment reply found", async () => {
+      // Arrange
+      await CommentRepliesTableTestHelper.addCommentReply({
+        id: "reply-333",
+        user_id: userId,
+        thread_id: threadId,
+        comment_id: commentId,
+      });
+
+      const commentReplyRepositoryPostgres =
+        new CommentReplyRepositoryPostgress(pool, {});
+
+      // Action & Assert
+      await expect(
+        commentReplyRepositoryPostgres.verifyCommentReplyAvailability(
+          "reply-333"
+        )
+      ).resolves.not.toThrow(NotFoundError);
+    });
+  });
+
+  describe("verifyCommentReplyOwner", () => {
+    it("should return AuthorizationError when comment reply not found", async () => {
+      // Arrange
+      const commentReplyRepositoryPostgres =
+        new CommentReplyRepositoryPostgress(pool, {});
+
+      // Action & Assert
+      await expect(
+        commentReplyRepositoryPostgres.verifyCommentReplyOwner(
+          "wrong-reply",
+          userId
+        )
+      ).rejects.toThrow(AuthorizationError);
+    });
+
+    it("should not return AuthorizationError when comment found", async () => {
+      // Arrange
+      await CommentRepliesTableTestHelper.addCommentReply({
+        id: "reply-333",
+        user_id: userId,
+        thread_id: threadId,
+        comment_id: commentId,
+      });
+      const commentReplyRepositoryPostgres =
+        new CommentReplyRepositoryPostgress(pool, {});
+
+      // Action & Assert
+      await expect(
+        commentReplyRepositoryPostgres.verifyCommentReplyOwner(
+          "reply-333",
+          userId
+        )
+      ).resolves.not.toThrow(AuthorizationError);
     });
   });
 

@@ -15,9 +15,6 @@ class GetAllThreadUseCase {
         const { username, fullname } = await this._userRepository.getUserById(
           thread.user_id
         );
-        if (!username || !fullname) {
-          throw new InvariantError("User not found");
-        }
 
         const response = {
           ...thread,

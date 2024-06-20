@@ -77,6 +77,10 @@ class UserRepositoryPostgres extends UserRepository {
     const result = await this._pool.query(query);
     const user = result.rows[0];
 
+    if (!user) {
+      throw new InvariantError("user not found");
+    }
+
     return user;
   }
 
@@ -88,6 +92,10 @@ class UserRepositoryPostgres extends UserRepository {
 
     const result = await this._pool.query(query);
     const user = result.rows[0];
+
+    if (!user) {
+      throw new InvariantError("user not found");
+    }
 
     return user;
   }

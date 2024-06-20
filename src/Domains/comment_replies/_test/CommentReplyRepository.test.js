@@ -13,6 +13,12 @@ describe("CommentReplyRepository interface", () => {
       commentReplyRepository.getCommentReplyById("")
     ).rejects.toThrow("COMMENT_REPLY_REPOSITORY.METHOD_NOT_IMPLEMENTED");
     await expect(
+      commentReplyRepository.verifyCommentReplyAvailability("")
+    ).rejects.toThrow("COMMENT_REPLY_REPOSITORY.METHOD_NOT_IMPLEMENTED");
+    await expect(
+      commentReplyRepository.verifyCommentReplyOwner("", "")
+    ).rejects.toThrow("COMMENT_REPLY_REPOSITORY.METHOD_NOT_IMPLEMENTED");
+    await expect(
       commentReplyRepository.getCommentReplyByCommentId("")
     ).rejects.toThrow("COMMENT_REPLY_REPOSITORY.METHOD_NOT_IMPLEMENTED");
     await expect(
