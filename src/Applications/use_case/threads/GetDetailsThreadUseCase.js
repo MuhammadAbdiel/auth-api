@@ -22,16 +22,10 @@ class GetDetailsThreadUseCase {
     const threadFromDb = await this._threadRepository.getThreadById(
       useCaseThreadId
     );
-    if (!threadFromDb) {
-      throw new NotFoundError("Thread not found");
-    }
 
     const { username: threadUsername } = await this._userRepository.getUserById(
       threadFromDb.user_id
     );
-    if (!threadUsername) {
-      throw new InvariantError("User not found");
-    }
 
     const thread = new ThreadDetails({
       id: threadFromDb.id,
@@ -50,9 +44,6 @@ class GetDetailsThreadUseCase {
       for (const commentData of commentsInThread) {
         const { username: commentUsername } =
           await this._userRepository.getUserById(commentData.user_id);
-        if (!commentUsername) {
-          throw new InvariantError("User not found");
-        }
 
         const commentDetails = new CommentDetails({
           id: commentData.id,
@@ -73,9 +64,6 @@ class GetDetailsThreadUseCase {
           for (const replyData of repliesInComment) {
             const { username: replyUsername } =
               await this._userRepository.getUserById(replyData.user_id);
-            if (!replyUsername) {
-              throw new InvariantError("User not found");
-            }
 
             const commentReplyDetails = new CommentReplyDetails({
               id: replyData.id,

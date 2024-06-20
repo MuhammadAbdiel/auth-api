@@ -103,15 +103,14 @@ describe("ThreadRepositoryPostgres", () => {
   });
 
   describe("getThreadById function", () => {
-    it("should throw undefined if no thread found", async () => {
+    it("should throw NotFoundError if no thread found", async () => {
       // Arrange
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
 
-      // Action
-      const thread = await threadRepositoryPostgres.getThreadById("thread-521");
-
-      // Assert
-      expect(thread).toBeUndefined();
+      // Action & Assert
+      await expect(
+        threadRepositoryPostgres.getThreadById("thread-521")
+      ).rejects.toThrow(NotFoundError);
     });
 
     it("should get the right thread", async () => {
