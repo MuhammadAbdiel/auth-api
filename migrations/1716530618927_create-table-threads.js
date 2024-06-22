@@ -15,6 +15,7 @@ exports.up = (pgm) => {
     created_at: {
       type: "TIMESTAMP",
       notNull: true,
+      default: pgm.func("current_timestamp"),
     },
     user_id: {
       type: "VARCHAR(50)",
