@@ -23,7 +23,8 @@ describe("a CommentDetails", () => {
       content: "something",
       date: "something",
       username: "something",
-      replies: "[]",
+      likeCount: "something",
+      replies: [],
     };
 
     // Action and Assert
@@ -32,13 +33,14 @@ describe("a CommentDetails", () => {
     );
   });
 
-  it("should throw error when payload contain wrong data type", () => {
+  it("should get comment details correctly", () => {
     // Arrange
     const payload = {
       id: "something",
       content: "something",
       date: "something",
       username: "something",
+      likeCount: 1,
       replies: [],
     };
 
@@ -50,6 +52,7 @@ describe("a CommentDetails", () => {
     expect(commentDetails.content).toStrictEqual(payload.content);
     expect(commentDetails.date).toStrictEqual(payload.date);
     expect(commentDetails.username).toStrictEqual(payload.username);
+    expect(commentDetails.likeCount).toStrictEqual(payload.likeCount);
     expect(commentDetails.replies).toStrictEqual(payload.replies);
     expect(commentDetails).toBeDefined();
   });

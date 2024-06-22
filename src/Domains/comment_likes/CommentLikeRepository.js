@@ -1,13 +1,13 @@
 class CommentLikeRepository {
-  async addCommentLike(commentId, userId) {
+  async addCommentLike(threadId, commentId, userId) {
     throw new Error("COMMENT_LIKE_REPOSITORY.METHOD_NOT_IMPLEMENTED");
   }
 
-  async verifyCommentLike(commentId) {
+  async verifyCommentLike(commentId, userId) {
     throw new Error("COMMENT_LIKE_REPOSITORY.METHOD_NOT_IMPLEMENTED");
   }
 
-  async verifyCommentLikeOwner(commentId, userId) {
+  async verifyCommentLikeOwner(commentLikeId, userId) {
     throw new Error("COMMENT_LIKE_REPOSITORY.METHOD_NOT_IMPLEMENTED");
   }
 
@@ -15,7 +15,7 @@ class CommentLikeRepository {
     throw new Error("COMMENT_LIKE_REPOSITORY.METHOD_NOT_IMPLEMENTED");
   }
 
-  async deleteCommentLike(commentId, userId) {
+  async deleteCommentLike(threadId, commentId, userId) {
     throw new Error("COMMENT_LIKE_REPOSITORY.METHOD_NOT_IMPLEMENTED");
   }
 }

@@ -10,11 +10,13 @@ class GetDetailsThreadUseCase {
     threadRepository,
     commentRepository,
     commentReplyRepository,
+    commentLikeRepository,
   }) {
     this._userRepository = userRepository;
     this._threadRepository = threadRepository;
     this._commentRepository = commentRepository;
     this._commentReplyRepository = commentReplyRepository;
+    this._commentLikeRepository = commentLikeRepository;
   }
 
   async execute(useCaseThreadId) {
@@ -41,6 +43,10 @@ class GetDetailsThreadUseCase {
     );
     // get comment replies by comment
     if (commentsInThread.length > 0) {
+      const likeCount = await this._commentLikeRepository.getCommentLikeCount(
+        thread.id
+      );
+
       for (const commentData of commentsInThread) {
         const { username: commentUsername } =
           await this._userRepository.getUserById(commentData.user_id);
@@ -52,6 +58,11 @@ class GetDetailsThreadUseCase {
             : commentData.content,
           date: commentData.created_at.toString(),
           username: commentUsername,
+          likeCount:
+            likeCount.length > 0
+              ? likeCount.filter((like) => like.comment_id === commentData.id)
+                  .length
+              : 1,
           replies: [],
         });
 

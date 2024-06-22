@@ -23,6 +23,8 @@ const OwnerValidator = require("../Applications/security/OwnerValidator");
 const OwnerValidatorManager = require("./security/OwnerValidatorManager");
 const CommentReplyRepository = require("../Domains/comment_replies/CommentReplyRepository");
 const CommentReplyRepositoryPostgres = require("./repository/CommentReplyRepositoryPostgres");
+const CommentLikeRepository = require("../Domains/comment_likes/CommentLikeRepository");
+const CommentLikeRepositoryPostgres = require("./repository/CommentLikeRepositoryPostgres");
 
 // use case
 const AddUserUseCase = require("../Applications/use_case/users/AddUserUseCase");
@@ -40,6 +42,7 @@ const AddCommentReplyUseCase = require("../Applications/use_case/comment_replies
 const DeleteCommentReplyUseCase = require("../Applications/use_case/comment_replies/DeleteCommentReplyUseCase");
 const GetAllThreadUseCase = require("../Applications/use_case/threads/GetAllThreadUseCase");
 const GetDetailsThreadUseCase = require("../Applications/use_case/threads/GetDetailsThreadUseCase");
+const CommentLikeUseCase = require("../Applications/use_case/comment_likes/CommentLikeUseCase");
 
 // creating container
 const container = createContainer();
@@ -124,6 +127,20 @@ container.register([
   {
     key: CommentReplyRepository.name,
     Class: CommentReplyRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
+        },
+        {
+          concrete: nanoid,
+        },
+      ],
+    },
+  },
+  {
+    key: CommentLikeRepository.name,
+    Class: CommentLikeRepositoryPostgres,
     parameter: {
       dependencies: [
         {
@@ -368,6 +385,35 @@ container.register([
         {
           name: "commentReplyRepository",
           internal: CommentReplyRepository.name,
+        },
+        {
+          name: "commentLikeRepository",
+          internal: CommentLikeRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: CommentLikeUseCase.name,
+    Class: CommentLikeUseCase,
+    parameter: {
+      injectType: "destructuring",
+      dependencies: [
+        {
+          name: "threadRepository",
+          internal: ThreadRepository.name,
+        },
+        {
+          name: "commentRepository",
+          internal: CommentRepository.name,
+        },
+        {
+          name: "commentLikeRepository",
+          internal: CommentLikeRepository.name,
+        },
+        {
+          name: "userRepository",
+          internal: UserRepository.name,
         },
       ],
     },

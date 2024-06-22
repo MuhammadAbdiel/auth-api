@@ -6,12 +6,12 @@ describe("CommentLikeRepository interface", () => {
     const commentLikeRepository = new CommentLikeRepository();
 
     // Action and Assert
-    await expect(commentLikeRepository.addCommentLike("", "")).rejects.toThrow(
-      "COMMENT_LIKE_REPOSITORY.METHOD_NOT_IMPLEMENTED"
-    );
-    await expect(commentLikeRepository.verifyCommentLike("")).rejects.toThrow(
-      "COMMENT_LIKE_REPOSITORY.METHOD_NOT_IMPLEMENTED"
-    );
+    await expect(
+      commentLikeRepository.addCommentLike("", "", "")
+    ).rejects.toThrow("COMMENT_LIKE_REPOSITORY.METHOD_NOT_IMPLEMENTED");
+    await expect(
+      commentLikeRepository.verifyCommentLike("", "")
+    ).rejects.toThrow("COMMENT_LIKE_REPOSITORY.METHOD_NOT_IMPLEMENTED");
     await expect(
       commentLikeRepository.verifyCommentLikeOwner("", "")
     ).rejects.toThrow("COMMENT_LIKE_REPOSITORY.METHOD_NOT_IMPLEMENTED");
@@ -19,7 +19,7 @@ describe("CommentLikeRepository interface", () => {
       "COMMENT_LIKE_REPOSITORY.METHOD_NOT_IMPLEMENTED"
     );
     await expect(
-      commentLikeRepository.deleteCommentLike("", "")
+      commentLikeRepository.deleteCommentLike("", "", "")
     ).rejects.toThrow("COMMENT_LIKE_REPOSITORY.METHOD_NOT_IMPLEMENTED");
   });
 });

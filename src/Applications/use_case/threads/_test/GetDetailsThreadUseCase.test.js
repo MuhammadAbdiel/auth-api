@@ -1,3 +1,4 @@
+const CommentLikeRepository = require("../../../../Domains/comment_likes/CommentLikeRepository");
 const CommentReplyRepository = require("../../../../Domains/comment_replies/CommentReplyRepository");
 const CommentReplyDetails = require("../../../../Domains/comment_replies/entities/CommentReplyDetails");
 const CommentRepository = require("../../../../Domains/comments/CommentRepository");
@@ -91,7 +92,14 @@ describe("GetDetailsThreadUseCase", () => {
       },
     ];
 
+    const likeCountsArray = [
+      { comment_id: "comment-123", count: 1 },
+      { comment_id: "comment-222", count: 1 },
+      { comment_id: "comment-333", count: 1 },
+    ];
+
     /** creating dependency of use case */
+    const mockCommentLikeRepository = new CommentLikeRepository();
     const mockCommentReplyRepository = new CommentReplyRepository();
     const mockCommentRepository = new CommentRepository();
     const mockThreadRepository = new ThreadRepository();
@@ -112,6 +120,14 @@ describe("GetDetailsThreadUseCase", () => {
     mockCommentRepository.getCommentByThreadId = jest
       .fn()
       .mockImplementation(() => Promise.resolve(commentData));
+    mockCommentLikeRepository.getCommentLikeCount = jest
+      .fn()
+      .mockImplementation((threadId) => {
+        if (threadId === "thread-123") {
+          return Promise.resolve(likeCountsArray);
+        }
+        return Promise.resolve([]);
+      });
     mockCommentReplyRepository.getCommentReplyByCommentId = jest
       .fn()
       .mockImplementation((commentId) => {
@@ -123,6 +139,7 @@ describe("GetDetailsThreadUseCase", () => {
 
     /** create use case instance */
     const getDetailsThreadUseCase = new GetDetailsThreadUseCase({
+      commentLikeRepository: mockCommentLikeRepository,
       commentReplyRepository: mockCommentReplyRepository,
       commentRepository: mockCommentRepository,
       threadRepository: mockThreadRepository,
@@ -147,6 +164,7 @@ describe("GetDetailsThreadUseCase", () => {
             content: commentData[0].content,
             date: commentData[0].created_at,
             username: userArnold.username,
+            likeCount: 1,
             replies: [
               new CommentReplyDetails({
                 id: replyData[0].id,
@@ -179,6 +197,7 @@ describe("GetDetailsThreadUseCase", () => {
             content: commentData[1].content,
             date: commentData[1].created_at,
             username: userArnold.username,
+            likeCount: 1,
             replies: [],
           }),
           new CommentDetails({
@@ -186,6 +205,7 @@ describe("GetDetailsThreadUseCase", () => {
             content: commentData[2].content,
             date: commentData[2].created_at,
             username: userArnold.username,
+            likeCount: 1,
             replies: [],
           }),
         ],
@@ -198,6 +218,7 @@ describe("GetDetailsThreadUseCase", () => {
     expect(threadDetails.comments[0].replies[1].username).toBe(
       userArnold.username
     );
+    expect(threadDetails.comments[0].likeCount).toBe(1);
   });
 
   it("should orchestrate get the details thread if there are no comments", async () => {
@@ -223,6 +244,7 @@ describe("GetDetailsThreadUseCase", () => {
     const commentData = [];
 
     /** creating dependency of use case */
+    const mockCommentLikeRepository = new CommentLikeRepository();
     const mockCommentReplyRepository = new CommentReplyRepository();
     const mockCommentRepository = new CommentRepository();
     const mockThreadRepository = new ThreadRepository();
@@ -246,6 +268,7 @@ describe("GetDetailsThreadUseCase", () => {
 
     /** create use case instance */
     const getDetailsThreadUseCase = new GetDetailsThreadUseCase({
+      commentLikeRepository: mockCommentLikeRepository,
       commentReplyRepository: mockCommentReplyRepository,
       commentRepository: mockCommentRepository,
       threadRepository: mockThreadRepository,
